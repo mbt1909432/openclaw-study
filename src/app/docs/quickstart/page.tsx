@@ -7,158 +7,154 @@ export const metadata: Metadata = {
 
 export default function QuickstartPage() {
   return (
-    <article className="prose prose-neutral dark:prose-invert max-w-3xl mx-auto px-4 py-8">
-      <h1>快速开始</h1>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-8 py-12">
+        <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
+          <a href="/" className="hover:text-zinc-900">首页</a>
+          <span>/</span>
+          <a href="/docs" className="hover:text-zinc-900">文档</a>
+          <span>/</span>
+          <span className="text-zinc-900">快速开始</span>
+        </nav>
 
-      <section>
-        <h2>运行引导向导</h2>
-        <pre><code>{`# 完整安装向导 + 安装系统服务
+        <header className="pb-8 border-b border-zinc-100 mb-10">
+          <h1 className="text-4xl font-bold text-zinc-900 tracking-tight mb-4">快速开始</h1>
+          <p className="text-lg text-zinc-500">完成安装后，运行配置向导开始使用</p>
+        </header>
+
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">运行配置向导</h2>
+
+          <div className="bg-zinc-900 rounded-xl overflow-hidden mb-6">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+              <span className="text-zinc-400 text-sm">terminal</span>
+            </div>
+            <pre className="p-4 text-sm font-mono text-zinc-300">
+              <code>{`# 完整安装向导 + 安装系统服务
 openclaw onboard --install-daemon
 
 # 仅运行配置向导
-openclaw onboard`}</code></pre>
+openclaw onboard`}</code>
+            </pre>
+          </div>
+        </section>
 
-        <h3>向导步骤</h3>
-        <ol>
-          <li><strong>安全警告</strong> - 确认你了解安全影响</li>
-          <li><strong>配置模式</strong> - 初学者选择 QuickStart</li>
-          <li><strong>模型供应商</strong> - 选择 AI 供应商（OpenAI、Anthropic、OpenRouter 等）</li>
-          <li><strong>消息平台</strong> - 配置飞书、Discord、Slack 等</li>
-          <li><strong>技能</strong> - 可选：启用托管技能</li>
-          <li><strong>钩子</strong> - 可选：配置事件钩子</li>
-        </ol>
-      </section>
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">配置步骤</h2>
 
-      <section>
-        <h2>启动后操作</h2>
+          <div className="space-y-4">
+            {[
+              { num: 1, title: '安全警告', desc: '确认你了解安全影响', cmd: '确认安全警告？Yes/No' },
+              { num: 2, title: '配置模式', desc: '初学者选择 QuickStart', cmd: '选择模式：QuickStart / Advanced' },
+              { num: 3, title: '模型供应商', desc: '选择 AI 供应商（OpenAI、Anthropic、OpenRouter 等）', items: ['Anthropic (Claude)', 'OpenAI (GPT)', 'OpenRouter (多模型)', '其他供应商...'] },
+              { num: 4, title: '消息平台', desc: '配置你的渠道', items: ['飞书/Lark', 'Discord', 'Slack', 'Telegram'] },
+              { num: 5, title: '技能', desc: '可选：启用托管技能', items: null },
+              { num: 6, title: '钩子', desc: '可选：配置事件钩子', items: null },
+            ].map((step) => (
+              <div key={step.num} className="flex gap-4 p-5 border border-zinc-200 rounded-xl hover:border-zinc-300 transition-colors">
+                <div className="flex-shrink-0 w-8 h-8 bg-violet-100 text-violet-700 rounded-lg flex items-center justify-center text-sm font-bold">
+                  {step.num}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-zinc-800 mb-1">{step.title}</h3>
+                  <p className="text-sm text-zinc-500 mb-2">{step.desc}</p>
+                  {step.items && (
+                    <ul className="text-sm text-zinc-600 space-y-1">
+                      {step.items.map((item) => (
+                        <li key={item} className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-zinc-300 rounded-full"></span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <h3>启动 Gateway</h3>
-        <pre><code>{`# 启动网关服务
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">启动后操作</h2>
+
+          <h3 className="text-lg font-medium text-zinc-800 mb-3">启动 Gateway</h3>
+          <div className="bg-zinc-900 rounded-xl overflow-hidden mb-6">
+            <pre className="p-4 text-sm font-mono text-zinc-300">
+              <code>{`# 启动网关服务
 openclaw gateway start
 
 # 检查状态
-openclaw status`}</code></pre>
-
-        <h3>访问 Web 面板</h3>
-        <p>在浏览器中打开：</p>
-        <pre><code>http://127.0.0.1:18789/</code></pre>
-      </section>
-
-      <section>
-        <h2>Web 面板功能</h2>
-        <p>Web 面板提供了丰富的管理功能，信息显示更全面：</p>
-
-        <div className="grid md:grid-cols-2 gap-4 my-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-            <h4 className="font-semibold mb-2">📊 实例</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              查看 Gateway 运行状态、系统资源使用情况
-            </p>
+openclaw status`}</code>
+            </pre>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-            <h4 className="font-semibold mb-2">💬 会话</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              查看和管理对话会话，浏览历史记录
-            </p>
+
+          <h3 className="text-lg font-medium text-zinc-800 mb-3">访问 Web 面板</h3>
+          <p className="text-zinc-600 mb-3">在浏览器中打开：</p>
+          <div className="bg-zinc-100 rounded-lg px-4 py-3 font-mono text-sm text-zinc-700 inline-block">
+            http://127.0.0.1:18789/
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-            <h4 className="font-semibold mb-2">⏰ 定时任务</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              创建和管理自动化定时任务
-            </p>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">Web 面板功能</h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { icon: '📊', title: '实例', desc: '查看 Gateway 运行状态、系统资源使用情况' },
+              { icon: '💬', title: '会话', desc: '查看和管理对话会话，浏览历史记录' },
+              { icon: '⏰', title: '定时任务', desc: '创建和管理自动化定时任务' },
+              { icon: '🤖', title: 'Agent', desc: '编辑 AGENTS.md、SOUL.md、USER.md 等各种文件' },
+            ].map((item) => (
+              <div key={item.title} className="p-5 border border-zinc-200 rounded-xl">
+                <div className="text-2xl mb-3">{item.icon}</div>
+                <h4 className="font-medium text-zinc-800 mb-1">{item.title}</h4>
+                <p className="text-sm text-zinc-500">{item.desc}</p>
+              </div>
+            ))}
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-            <h4 className="font-semibold mb-2">🤖 Agent</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              编辑 AGENTS.md、SOUL.md、USER.md 等各种文件
-            </p>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">示例对话</h2>
+          <p className="text-zinc-600 mb-4">机器人连接成功后，试试这些对话：</p>
+
+          <div className="bg-zinc-50 rounded-xl p-5">
+            <ul className="space-y-2 text-zinc-700">
+              <li className="flex items-center gap-3">
+                <span className="text-zinc-400">•</span>
+                <code className="text-sm">"桌面有什么？"</code>
+                <span className="text-sm text-zinc-500">— 查看桌面文件</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-zinc-400">•</span>
+                <code className="text-sm">"北京天气？"</code>
+                <span className="text-sm text-zinc-500">— 查询天气</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-zinc-400">•</span>
+                <code className="text-sm">"帮我搜索一下..."</code>
+                <span className="text-sm text-zinc-500">— 网页搜索</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-zinc-400">•</span>
+                <code className="text-sm">"安装 find-skill"</code>
+                <span className="text-sm text-zinc-500">— 安装新技能</span>
+              </li>
+            </ul>
           </div>
-        </div>
+        </section>
 
-        <h3>Agent 文件管理</h3>
-        <p>在「Agent」板块可以编辑以下文件：</p>
-        <table>
-          <thead>
-            <tr>
-              <th>文件</th>
-              <th>用途</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>AGENTS.md</code></td>
-              <td>Agent 行为规范和操作规则</td>
-            </tr>
-            <tr>
-              <td><code>SOUL.md</code></td>
-              <td>人格、语气、边界定义</td>
-            </tr>
-            <tr>
-              <td><code>USER.md</code></td>
-              <td>用户信息和偏好</td>
-            </tr>
-            <tr>
-              <td><code>IDENTITY.md</code></td>
-              <td>机器人名称和形象</td>
-            </tr>
-            <tr>
-              <td><code>MEMORY.md</code></td>
-              <td>长期记忆</td>
-            </tr>
-            <tr>
-              <td><code>HEARTBEAT.md</code></td>
-              <td>心跳检查任务清单</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>TUI 终端界面</h2>
-        <pre><code>{`# 启动终端界面
-openclaw tui
-
-# 简写
-claw tui`}</code></pre>
-      </section>
-
-      <section>
-        <h2>示例对话</h2>
-        <p>机器人连接成功后，试试这些对话：</p>
-        <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg my-4">
-          <ul className="mb-0">
-            <li>"桌面有什么？" - 查看桌面文件</li>
-            <li>"北京天气？" - 查询天气</li>
-            <li>"帮我搜索一下..." - 网页搜索</li>
-            <li>"总结一下这个链接的内容" - 抓取网页</li>
-            <li>"帮我写一段代码..." - 代码生成</li>
-            <li>"安装 find-skill" - 安装新技能</li>
-          </ul>
-        </div>
-
-        <h3>查询组件信息</h3>
-        <pre><code>{`# 询问 OpenClaw 组件
-@机器人 openclaw 有哪些组件可以用？比如 gateway skill agent tool channel memory 等
-
-# 询问工作位置
-@机器人 你工作的位置`}</code></pre>
-      </section>
-
-      <section>
-        <h2>下一步</h2>
-        <ul>
-          <li><a href="/docs/feishu">飞书集成</a> - 配置飞书机器人</li>
-          <li><a href="/docs/components">组件介绍</a> - 了解各个组件</li>
-          <li><a href="/docs/workspace">目录结构</a> - 了解文件存放位置</li>
-          <li><a href="/docs/multi-gateway">多 Gateway</a> - 配置救援机器人</li>
-        </ul>
-      </section>
-
-      <footer className="border-t pt-4 mt-8 text-sm text-neutral-500">
-        <a href="/docs/llms-quickstart.txt" className="text-blue-600 dark:text-blue-400">
-          查看 LLM 友好版本
-        </a>
-      </footer>
-    </article>
+        <footer className="pt-8 border-t border-zinc-100">
+          <div className="flex justify-between items-center">
+            <a href="/docs/installation" className="text-zinc-500 hover:text-zinc-900 transition-colors">
+              ← 安装指南
+            </a>
+            <a href="/docs/feishu" className="text-zinc-500 hover:text-zinc-900 transition-colors">
+              飞书集成 →
+            </a>
+          </div>
+        </footer>
+      </div>
+    </div>
   )
 }
