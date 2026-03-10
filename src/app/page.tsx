@@ -2,159 +2,201 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-      {/* Header */}
-      <header className="border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🦁</span>
-            <span className="font-bold text-xl">OpenClaw 文档</span>
-          </div>
-          <nav className="flex items-center gap-6">
-            <Link href="/docs" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+    <div className="min-h-screen bg-slate-50">
+      {/* 导航栏 */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-violet-200 group-hover:shadow-violet-300 transition-shadow">
+              O
+            </div>
+            <span className="font-semibold text-slate-800 group-hover:text-violet-600 transition-colors">OpenClaw</span>
+          </Link>
+          <div className="flex items-center gap-8">
+            <Link href="/docs" className="text-sm text-slate-500 hover:text-violet-600 transition-colors">
               文档
             </Link>
-            <a
-              href="https://docs.openclaw.ai/"
-              target="_blank"
-              rel="noopener"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-            >
+            <a href="https://docs.openclaw.ai/" target="_blank" rel="noopener" className="text-sm text-slate-500 hover:text-violet-600 transition-colors">
               官方文档
             </a>
-            <a
-              href="https://github.com/openclaw-ai/openclaw"
-              target="_blank"
-              rel="noopener"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-            >
+            <a href="https://github.com/openclaw-ai/openclaw" target="_blank" rel="noopener" className="text-sm px-4 py-2 bg-slate-800 text-white rounded-full hover:bg-violet-600 transition-colors">
               GitHub
             </a>
-          </nav>
+          </div>
         </div>
-      </header>
+      </nav>
 
-      {/* Hero */}
-      <main className="max-w-6xl mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-            OpenClaw 使用指南
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            从零开始，手把手教你安装和配置 OpenClaw AI Agent 网关平台
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link
-              href="/docs/installation"
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              开始安装
+      {/* Hero 区域 */}
+      <section className="pt-20 pb-32 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-violet-50 text-violet-600 text-sm font-medium rounded-full mb-6">
+              <span className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"></span>
+              面向小白的 OpenClaw 使用指南
+            </div>
+            <h1 className="text-5xl font-bold text-slate-900 leading-tight mb-6">
+              从零开始<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-purple-600">配置你的 AI 助手</span>
+            </h1>
+            <p className="text-xl text-slate-500 leading-relaxed mb-10 max-w-2xl">
+              OpenClaw 是一个开源的 AI Agent 网关平台。本指南将手把手教你安装、配置和使用，即使没有技术背景也能轻松上手。
+            </p>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/docs/installation"
+                className="px-6 py-3 bg-slate-900 text-white rounded-xl font-medium hover:bg-violet-600 transition-all hover:shadow-lg hover:shadow-violet-200 active:scale-95"
+              >
+                开始安装
+              </Link>
+              <Link
+                href="/docs"
+                className="px-6 py-3 bg-white text-slate-700 rounded-xl font-medium border border-slate-200 hover:border-violet-300 hover:text-violet-600 transition-all"
+              >
+                浏览文档
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 特性卡片 */}
+      <section className="px-6 pb-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-5">
+            <div className="group p-6 bg-white rounded-2xl border border-slate-100 hover:border-violet-200 hover:shadow-xl hover:shadow-violet-100 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-50 to-orange-100 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <span className="text-2xl">🎯</span>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">零基础友好</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                  每个步骤都有详细说明，配合截图和命令示例，跟着做就能成功
+              </p>
+            </div>
+            <div className="group p-6 bg-white rounded-2xl border border-slate-100 hover:border-violet-200 hover:shadow-xl hover:shadow-violet-100 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-cyan-100 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <span className="text-2xl">💬</span>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">飞书集成</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                  完整的飞书配置教程，快速搭建企业专属的 AI 助手
+              </p>
+            </div>
+            <div className="group p-6 bg-white rounded-2xl border border-slate-100 hover:border-violet-200 hover:shadow-xl hover:shadow-violet-100 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-violet-50 to-purple-100 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <span className="text-2xl">🤖</span>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">LLM 友好</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                  提供 llms.txt 格式文档，方便 AI 模型索引和理解内容
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 快速开始 */}
+      <section className="px-6 pb-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-10 overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/20 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl"></div>
+            <div className="relative">
+              <h2 className="text-2xl font-bold text-white mb-8">三步开始使用</h2>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="relative">
+                  <div className="text-6xl font-bold text-white/10 absolute -top-3 -left-1">01</div>
+                  <div className="relative pt-4">
+                    <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mb-4">
+                      <span className="text-violet-400">⬇</span>
+                    </div>
+                    <h4 className="text-white font-semibold mb-2">安装 Node.js</h4>
+                    <p className="text-slate-400 text-sm">下载并安装 Node.js 22 或更高版本</p>
+                  </div>
+                </div>
+                <div className="relative">
+                  <div className="text-6xl font-bold text-white/10 absolute -top-3 -left-1">02</div>
+                  <div className="relative pt-4">
+                    <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mb-4">
+                      <span className="text-violet-400">⚡</span>
+                    </div>
+                    <h4 className="text-white font-semibold mb-2">安装 OpenClaw</h4>
+                    <code className="text-violet-400 text-sm bg-white/5 px-2 py-1 rounded">npm install -g openclaw</code>
+                  </div>
+                </div>
+                <div className="relative">
+                  <div className="text-6xl font-bold text-white/10 absolute -top-3 -left-1">03</div>
+                  <div className="relative pt-4">
+                    <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mb-4">
+                      <span className="text-violet-400">🚀</span>
+                    </div>
+                    <h4 className="text-white font-semibold mb-2">运行配置向导</h4>
+                    <code className="text-violet-400 text-sm bg-white/5 px-2 py-1 rounded">openclaw onboard</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 文档卡片 */}
+      <section className="px-6 pb-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-slate-800">文档目录</h2>
+            <Link href="/docs" className="text-sm text-violet-600 hover:text-violet-700 font-medium">
+              查看全部 →
             </Link>
-            <Link
-              href="/docs"
-              className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-            >
-              查看文档
-            </Link>
           </div>
-        </div>
-
-        {/* Features */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="text-3xl mb-4">🎯</div>
-            <h3 className="text-lg font-semibold mb-2">面向小白</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              详细的步骤说明，即使没有技术背景也能跟着操作
-            </p>
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="text-3xl mb-4">🔌</div>
-            <h3 className="text-lg font-semibold mb-2">飞书集成</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              完整的飞书配置教程，快速搭建企业 AI 助手
-            </p>
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="text-3xl mb-4">🤖</div>
-            <h3 className="text-lg font-semibold mb-2">LLM 友好</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              提供 llms.txt 格式，方便 AI 模型索引和理解
-            </p>
-          </div>
-        </div>
-
-        {/* Quick Start */}
-        <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-8 mb-16">
-          <h2 className="text-2xl font-bold mb-6 text-center">快速开始</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 font-bold">
-                1
-              </div>
-              <h4 className="font-medium mb-2">安装 Node.js</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                下载 Node.js 22+ 并安装
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 font-bold">
-                2
-              </div>
-              <h4 className="font-medium mb-2">安装 OpenClaw</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                npm install -g openclaw
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 font-bold">
-                3
-              </div>
-              <h4 className="font-medium mb-2">运行配置向导</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                openclaw onboard --install-daemon
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Documentation Sections */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-6 text-center">文档目录</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Link href="/docs/installation" className="block p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-colors">
-              <h4 className="font-medium mb-1">安装指南</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Node.js 要求、安装方法</p>
+            <Link href="/docs/installation" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+              <div className="w-8 h-8 bg-violet-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-violet-100 transition-colors">
+                  <span>📦</span>
+              </div>
+              <h4 className="font-semibold text-slate-800 mb-1">安装指南</h4>
+              <p className="text-slate-400 text-sm">环境要求与安装方法</p>
             </Link>
-            <Link href="/docs/quickstart" className="block p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-colors">
-              <h4 className="font-medium mb-1">快速开始</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">配置向导、Web 面板</p>
+            <Link href="/docs/quickstart" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+              <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
+                  <span>🚀</span>
+              </div>
+              <h4 className="font-semibold text-slate-800 mb-1">快速开始</h4>
+              <p className="text-slate-400 text-sm">配置向导与示例对话</p>
             </Link>
-            <Link href="/docs/feishu" className="block p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-colors">
-              <h4 className="font-medium mb-1">飞书集成</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">开放平台配置、连接验证</p>
+            <Link href="/docs/feishu" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+              <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-cyan-100 transition-colors">
+                  <span>💬</span>
+              </div>
+              <h4 className="font-semibold text-slate-800 mb-1">飞书集成</h4>
+              <p className="text-slate-400 text-sm">飞书配置与连接验证</p>
             </Link>
-            <Link href="/docs/troubleshooting" className="block p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-colors">
-              <h4 className="font-medium mb-1">故障排查</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">常见问题与解决方案</p>
+            <Link href="/docs/components" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+              <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-100 transition-colors">
+                  <span>🏗️</span>
+              </div>
+              <h4 className="font-semibold text-slate-800 mb-1">组件介绍</h4>
+              <p className="text-slate-400 text-sm">Gateway、Agent、Skills</p>
             </Link>
           </div>
         </div>
-      </main>
+      </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-gray-800 py-8">
-        <div className="max-w-6xl mx-auto px-4 text-center text-gray-600 dark:text-gray-400 text-sm">
-          <p className="mb-2">
-            OpenClaw 是一个开源的 AI Agent 网关平台
-          </p>
-          <p>
-            <a href="https://docs.openclaw.ai/" className="text-blue-600 dark:text-blue-400 hover:underline">官方文档</a>
-            {' · '}
-            <a href="https://github.com/openclaw-ai/openclaw" className="text-blue-600 dark:text-blue-400 hover:underline">GitHub</a>
-            {' · '}
-            <a href="https://www.npmjs.com/package/openclaw" className="text-blue-600 dark:text-blue-400 hover:underline">npm</a>
-          </p>
+      {/* 底部 */}
+      <footer className="border-t border-slate-100 bg-white">
+        <div className="max-w-6xl mx-auto px-6 py-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
+                  O
+              </div>
+              <span className="text-slate-500 text-sm">OpenClaw 文档</span>
+            </div>
+            <div className="flex items-center gap-6 text-sm text-slate-400">
+              <a href="https://docs.openclaw.ai/" target="_blank" rel="noopener" className="hover:text-violet-600 transition-colors">官方文档</a>
+              <a href="https://github.com/openclaw-ai/openclaw" target="_blank" rel="noopener" className="hover:text-violet-600 transition-colors">GitHub</a>
+              <a href="https://clawhub.ai/" target="_blank" rel="noopener" className="hover:text-violet-600 transition-colors">ClawHub</a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
