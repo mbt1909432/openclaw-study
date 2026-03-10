@@ -58,18 +58,66 @@ export default function FeishuPage() {
             <h2 className="text-2xl font-semibold text-zinc-900">配置应用权限</h2>
           </div>
 
-          <p className="text-zinc-600 mb-4">在「权限管理」中添加以下权限：</p>
+          <p className="text-zinc-600 mb-4">在「权限管理」→「权限配置」中，点击「JSON 编辑」，粘贴以下配置：</p>
 
-          <div className="bg-zinc-50 rounded-xl p-5">
-            <ul className="space-y-2">
-              {['获取与更新群组信息', '接收群聊消息', '发送群聊消息', '获取用户信息'].map((perm) => (
-                <li key={perm} className="flex items-center gap-2 text-zinc-700">
-                  <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  {perm}
-                </li>
-              ))}
+          <div className="bg-zinc-900 rounded-xl overflow-hidden mb-6">
+            <div className="flex items-center px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+              <span className="text-zinc-400 text-sm">📋 权限配置 JSON（可直接复制）</span>
+            </div>
+            <pre className="p-4 text-sm font-mono overflow-x-auto max-h-80">
+              <code className="text-zinc-300">{`{
+  "scopes": {
+    "tenant": [
+      "aily:file:read",
+      "aily:file:write",
+      "application:application.app_message_stats.overview:readonly",
+      "application:application:self_manage",
+      "application:bot.menu:write",
+      "calendar:calendar.event:read",
+      "calendar:calendar.event:reply",
+      "calendar:calendar:readonly",
+      "cardkit:card:write",
+      "contact:user.base:readonly",
+      "contact:user.employee_id:readonly",
+      "corehr:file:download",
+      "docs:document.content:read",
+      "docx:document",
+      "docx:document.block:convert",
+      "docx:document:create",
+      "docx:document:readonly",
+      "docx:document:write_only",
+      "event:ip_list",
+      "im:chat",
+      "im:chat.access_event.bot_p2p_chat:read",
+      "im:chat.members:bot_access",
+      "im:message",
+      "im:message.group_at_msg:readonly",
+      "im:message.group_msg",
+      "im:message.p2p_msg:readonly",
+      "im:message:readonly",
+      "im:message:send_as_bot",
+      "im:resource",
+      "sheets:spreadsheet",
+      "wiki:wiki:readonly"
+    ],
+    "user": [
+      "aily:file:read",
+      "aily:file:write",
+      "im:chat.access_event.bot_p2p_chat:read"
+    ]
+  }
+}`}</code>
+            </pre>
+          </div>
+
+          <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl p-5">
+            <p className="font-medium text-blue-800 mb-2">权限说明</p>
+            <ul className="text-sm text-blue-700 space-y-1">
+              <li>• <strong>im:*</strong> - 消息收发相关权限</li>
+              <li>• <strong>docx:*</strong> - 飞书文档操作权限</li>
+              <li>• <strong>sheets:*</strong> - 飞书表格操作权限</li>
+              <li>• <strong>contact:*</strong> - 用户信息读取权限</li>
+              <li>• <strong>calendar:*</strong> - 日历事件权限</li>
             </ul>
           </div>
         </section>
@@ -83,17 +131,83 @@ export default function FeishuPage() {
             <h2 className="text-2xl font-semibold text-zinc-900">配置事件订阅</h2>
           </div>
 
-          <p className="text-zinc-600 mb-4">在「事件订阅」中：</p>
+          <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl p-5 mb-6">
+            <p className="font-medium text-blue-800 mb-2">订阅方式：使用「长连接」接收事件</p>
+            <p className="text-sm text-blue-700">
+              无需注册公网域名或配置加密策略，仅需启动 OpenClaw Gateway 并确保连接成功后，即可开启该模式。
+            </p>
+          </div>
 
-          <div className="bg-zinc-50 rounded-xl p-5 space-y-2">
-            <div className="flex items-start gap-3">
-              <span className="text-zinc-400">•</span>
-              <p className="text-zinc-700"><strong>请求网址：</strong>留空（稍后配置）</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="text-zinc-400">•</span>
-              <p className="text-zinc-700"><strong>添加事件：</strong>消息相关事件</p>
-            </div>
+          <h3 className="text-lg font-medium text-zinc-800 mb-4">添加以下事件</h3>
+
+          <div className="border border-zinc-200 rounded-xl overflow-hidden mb-6">
+            <table className="w-full text-sm">
+              <thead className="bg-zinc-50">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">事件名称</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">事件类型</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">所需权限</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100">
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">接收消息</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.message.receive_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">获取单聊、群聊消息</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">机器人进群</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.chat.member.bot.added_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">获取与更新群组信息</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">机器人被移出群</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.chat.member.bot.deleted_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">订阅机器人进、出群事件</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">用户进群</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.chat.member.user.added_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">获取与更新群组信息</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">用户退群</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.chat.member.user.deleted_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">获取与更新群组信息</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">群配置修改</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.chat.updated_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">获取与更新群组信息</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">消息撤回</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.message.recalled_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">获取单聊、群组消息</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">消息已读</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.message.message_read_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">获取单聊、群组消息</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">用户进入与机器人会话</td>
+                  <td className="px-4 py-3 font-mono text-xs text-violet-600">im.chat.access_event.bot_p2p_chat_entered_v1</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-5">
+            <p className="font-medium text-amber-800 mb-2">配置顺序</p>
+            <ol className="list-decimal list-inside text-amber-700 space-y-1 text-sm">
+              <li>先添加事件（此时可能显示"未检测到连接"）</li>
+              <li>启动 OpenClaw Gateway</li>
+              <li>等待 WebSocket 连接成功</li>
+              <li>飞书后台会自动检测到连接</li>
+              <li>点击保存完成配置</li>
+            </ol>
           </div>
         </section>
 
