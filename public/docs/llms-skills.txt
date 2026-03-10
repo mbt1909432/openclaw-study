@@ -1,0 +1,109 @@
+# OpenClaw 技能安装与使用
+
+## 什么是技能（Skills）？
+
+技能是 OpenClaw 的扩展模块，可以让你的 AI 助手获得更多能力，比如生成图片、发布内容到社交平台、翻译文档等。
+
+## 安装技能
+
+### 方法一：通过对话安装（推荐）
+
+```
+@机器人 安装 find-skill
+@机器人 安装 baoyu-image-gen
+```
+
+### 方法二：从 ClawHub 安装
+
+```
+# 访问技能市场
+https://clawhub.ai/
+
+# 命令行安装
+clawhub install find-skill
+clawhub install baoyu-image-gen
+```
+
+### 方法三：从 GitHub 安装
+
+```
+npx skills add jimliu/baoyu-skills
+```
+
+## 技能目录结构
+
+```
+~/.openclaw/workspace/skills/
+└── find-skill/
+    ├── SKILL.md
+    ├── _meta.json
+    └── .clawhub/
+```
+
+## 推荐技能包：baoyu-skills
+
+GitHub: https://github.com/JimLiu/baoyu-skills
+
+### 内容生成技能
+
+| 技能 | 功能 |
+|------|------|
+| baoyu-xhs-images | 小红书风格图文生成 |
+| baoyu-infographic | 信息图生成（20 种布局） |
+| baoyu-cover-image | 文章封面图生成 |
+| baoyu-slide-deck | PPT 幻灯片生成 |
+| baoyu-comic | 知识漫画创作 |
+| baoyu-article-illustrator | 文章插图生成 |
+
+### 发布技能
+
+| 技能 | 功能 |
+|------|------|
+| baoyu-post-to-x | 发布到 X (Twitter) |
+| baoyu-post-to-wechat | 发布到微信公众号 |
+| baoyu-post-to-weibo | 发布到微博 |
+
+### AI 生成技能
+
+| 技能 | 功能 |
+|------|------|
+| baoyu-image-gen | AI 图像生成（OpenAI、Google、阿里云） |
+
+### 工具技能
+
+| 技能 | 功能 |
+|------|------|
+| baoyu-url-to-markdown | 网页转 Markdown |
+| baoyu-translate | 文章翻译 |
+| baoyu-markdown-to-html | Markdown 转 HTML |
+| baoyu-compress-image | 图片压缩 |
+| baoyu-format-markdown | Markdown 格式化 |
+
+## 配置 API Key
+
+```
+# 用户级配置
+mkdir -p ~/.baoyu-skills
+cat > ~/.baoyu-skills/.env << 'EOF'
+# OpenAI
+OPENAI_API_KEY=sk-xxx
+
+# Google
+GOOGLE_API_KEY=xxx
+
+# 阿里云通义万象
+DASHSCOPE_API_KEY=sk-xxx
+
+# 微信公众号
+WECHAT_APP_ID=your_app_id
+WECHAT_APP_SECRET=your_app_secret
+EOF
+```
+
+## 重启生效
+
+安装新技能后需要重启 Gateway：
+
+```
+openclaw gateway restart
+```

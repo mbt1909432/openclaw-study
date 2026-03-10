@@ -1,0 +1,114 @@
+# OpenClaw 组件介绍
+
+OpenClaw 是一个模块化的 AI Agent 平台，由多个组件协同工作。
+
+## 核心架构
+
+### Gateway（网关守护进程）
+
+核心服务进程，负责：
+- 管理所有消息渠道连接
+- 对外暴露 WebSocket API
+- 处理事件调度（heartbeat、cron、agent 等）
+- 协调各个子服务
+
+### Agent（智能体）
+
+处理对话和执行任务的 AI 主体，特点：
+- 有自己的工作区（workspace）
+- 有独立的人格和记忆
+- 可以绑定到不同的消息渠道
+
+### Nodes（节点）
+
+可选的设备扩展，提供额外能力：
+- macOS/iOS/Android/无头设备
+- 提供摄像头、屏幕录制、位置等能力
+
+## Channels（消息渠道）
+
+OpenClaw 支持众多消息平台：
+
+- Telegram
+- WhatsApp
+- Discord
+- 飞书 Feishu
+- Slack
+- Signal
+- iMessage
+- WeChat
+- LINE
+- Matrix
+- IRC
+- Mattermost
+- MS Teams
+- Google Chat
+- Nostr
+- Twitch
+- Zalo
+- BlueBubbles
+
+## Tools（工具）
+
+Agent 可以使用的内置工具：
+
+| 工具 | 功能 |
+|------|------|
+| exec | 执行 shell 命令 |
+| browser | 浏览器控制（含 Chrome 扩展 relay） |
+| web_search / web_fetch | 网页搜索/抓取 |
+| canvas | 渲染 UI 画布 |
+| nodes | 控制配对设备 |
+| sessions_spawn / subagents | 多智能体编排 |
+| tts | 语音合成 |
+| feishu_* | 飞书文档/表格/知识库操作 |
+| message | 发送消息 |
+
+## Memory（记忆）
+
+OpenClaw 的记忆系统：
+
+| 文件/工具 | 用途 |
+|-----------|------|
+| memory/YYYY-MM-DD.md | 每日日志（原始记录） |
+| MEMORY.md | 长期记忆（精华提炼，仅主 session 加载） |
+| HEARTBEAT.md | 心跳检查任务清单 |
+| acontext_* 工具 | 跨 session 技能学习和历史查询 |
+
+## Skills（技能）
+
+可扩展的技能包系统，包含 50+ 内置技能：
+
+常用技能：weather、healthcheck、github、notion、obsidian、spotify、discord、slack、coding-agent、canvas、tts、browser、feishu-doc、PDF 处理、图像生成等
+
+### 安装新技能
+
+从 ClawHub 技能市场安装：
+
+```
+# 在对话中让机器人安装
+@机器人 安装 find-skill
+
+# 或访问 ClawHub
+https://clawhub.ai/
+```
+
+### 技能目录结构
+
+```
+~/.openclaw/workspace/skills/
+└── find-skill/
+    ├── SKILL.md
+    ├── _meta.json
+    └── .clawhub/
+```
+
+## 其他组件
+
+| 组件 | 说明 |
+|------|------|
+| Session | 对话上下文管理，支持多 session 并行 |
+| Providers | AI 模型接入层（OpenAI、Anthropic、OpenRouter 等） |
+| Plugins | 渠道插件系统 |
+| Automation | 自动化/定时任务（cron + heartbeat） |
+| ClaWHub | 技能市场 https://clawhub.ai |

@@ -1,0 +1,93 @@
+# OpenClaw 使用文档
+
+> OpenClaw - AI Agent 网关平台
+
+## 什么是 OpenClaw？
+
+OpenClaw 是一个 AI Agent 网关平台，连接消息平台（飞书、Discord、Slack、Telegram）与 AI 模型。它管理 Agent 生命周期，协调浏览器和画布服务，为构建 AI 驱动的自动化提供统一接口。
+
+## 文档目录
+
+### 入门指南
+- [/docs/installation](/docs/installation) - 安装指南（Node.js 22+、快速安装、npm 安装）
+- [/docs/quickstart](/docs/quickstart) - 快速开始（配置向导、Web 面板、示例对话）
+
+### 配置指南
+- [/docs/feishu](/docs/feishu) - 飞书集成设置
+- [/docs/api-keys](/docs/api-keys) - API Key 管理
+- [/docs/multi-gateway](/docs/multi-gateway) - 运行多个 Gateway 实例
+
+### 组件与架构
+- [/docs/components](/docs/components) - 组件介绍（Gateway、Agent、Channels、Tools、Memory、Skills）
+- [/docs/workspace](/docs/workspace) - 目录结构（Gateway 数据目录、Agent 工作区）
+
+### 技能扩展
+- [/docs/skills](/docs/skills) - 技能安装与使用（ClawHub、baoyu-skills）
+
+### 参考文档
+- [/docs/commands](/docs/commands) - 命令参考
+
+### 故障排查
+- [/docs/troubleshooting](/docs/troubleshooting) - 常见问题与解决方案
+
+## 核心概念
+
+### Gateway（网关）
+核心服务进程，负责：
+- 接收消息平台的请求
+- 管理 AI Agent 生命周期
+- 协调 Browser、Canvas 等子服务
+
+### Workspace（工作空间）
+Agent 的"家"目录，包含：
+- 引导文件（AGENTS.md、SOUL.md、USER.md 等）
+- 记忆文件（MEMORY.md、memory/YYYY-MM-DD.md）
+- 技能和画布文件
+
+### Profile（配置档案）
+使用 `--profile` 参数创建隔离的配置实例：
+- 默认：`~/.openclaw/`
+- 自定义：`~/.openclaw-{profile}/`
+
+## 快速链接
+
+- 官方文档：https://docs.openclaw.ai/
+- GitHub：https://github.com/openclaw-ai/openclaw
+- npm：https://www.npmjs.com/package/openclaw
+- ClawHub 技能市场：https://clawhub.ai/
+- baoyu-skills：https://github.com/JimLiu/baoyu-skills
+
+## 安装
+
+```bash
+# 快速安装 - macOS / Linux
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# 快速安装 - Windows (PowerShell)
+iwr -useb https://openclaw.ai/install.ps1 | iex
+
+# npm 安装
+npm install -g openclaw@latest
+```
+
+## 运行引导向导
+
+```bash
+# 完整安装向导 + 安装系统服务
+openclaw onboard --install-daemon
+```
+
+## 最低要求
+
+- Node.js >= 22
+- npm 或 pnpm
+- 建议内存 2GB+
+
+## 示例对话
+
+```
+桌面有什么？
+北京天气？
+openclaw 有哪些组件可以用？
+安装 find-skill
+```

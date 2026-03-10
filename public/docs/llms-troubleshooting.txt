@@ -1,0 +1,159 @@
+# OpenClaw 故障排查
+
+## 通用排查步骤
+
+1. **查看状态**：`openclaw status`
+2. **查看日志**：`openclaw logs --follow`
+3. **重启服务**：`openclaw gateway restart`
+
+## 端口冲突
+
+### 症状
+
+```
+gateway token mismatch (provide gateway auth token)
+Gateway failed to start: another gateway instance is already listening on ws://127.0.0.1:18789
+```
+
+### 原因
+
+另一个 Gateway 实例正在使用这个端口
+
+### 解决方法
+
+```
+# 1. 检查哪个进程在使用端口
+netstat -tlnp | grep 18789
+
+# 2. 停止旧服务
+openclaw gateway stop
+
+# 3. 如果是 rescue profile
+openclaw --profile rescue gateway stop
+
+# 4. 修改配置文件中的端口
+nano ~/.openclaw-rescue/openclaw.json
+# 把 "port": 18789 改成 "port": 19789
+
+# 5. 重启
+openclaw --profile rescue gateway restart
+```
+
+## Gateway 不可达
+
+### 症状
+
+```
+Gateway: unreachable (connect failed)
+```
+
+### 排查步骤
+
+```
+# 1. 检查服务状态
+systemctl --user status openclaw-gateway
+
+# 2. 检查端口
+netstat -tlnp | grep 18789
+
+# 3. 检查日志
+openclaw logs --follow
+
+# 4. 重启服务
+openclaw gateway restart
+```
+
+## 飞书连接问题
+
+### 症状：未检测到应用连接信息
+
+飞书开放平台显示"未检测到应用连接信息"
+
+### 原因
+
+App ID 或 App Secret 不匹配
+
+### 解决方法
+
+```
+# 1. 查看当前配置
+grep -A 5 '"feishu"' ~/.openclaw/openclaw.json
+
+# 2. 对比飞书开放平台显示的 App ID 是否一致
+
+# 3. 编辑配置文件
+nano ~/.openclaw/openclaw.json
+
+# 4. 修改 app_id 和 app_secret
+
+# 5. 重启 Gateway
+openclaw gateway restart
+
+# 6. 查看日志确认连接成功
+openclaw logs --follow | grep -i "ws\|feishu"
+```
+
+### 成功的标志
+
+```
+feishu[default]: bot open_id resolved: ou_xxxxx
+feishu[default]: WebSocket client started
+[ '[ws]', 'ws client ready' ]
+```
+
+**重要顺序：**
+1. OpenClaw 启动 → WebSocket 连接成功
+2. 飞书后台检测到连接 → 显示"已检测到连接"
+3. 点击保存事件订阅
+
+## API Key 认证失败
+
+### 症状
+
+```
+Error: 401 Missing Authentication header
+```
+
+### 解决方法
+
+```
+# 1. 检查 Key 文件是否存在
+cat ~/.openclaw/agents/main/agent/models.json
+
+# 2. 如果不存在，重新运行配置向导
+openclaw onboard
+
+# 3. 重启服务
+openclaw gateway restart
+```
+
+## 插件重复警告
+
+### 症状
+
+```
+plugins.entries.feishu: plugin feishu: duplicate plugin id detected
+```
+
+### 说明
+
+这是**警告**，不是错误，可以忽略。两个 profile 的插件在各自目录中，不会实际冲突。
+
+## Windows 特定问题
+
+### 命令找不到
+
+如果运行 `openclaw` 提示找不到命令：
+
+1. 确认 Node.js 安装成功：`node --version`
+2. 确认 npm 全局路径在 PATH 中
+3. 重启终端或重启电脑
+
+### 权限问题
+
+以管理员身份运行终端，然后重试。
+
+## 获取帮助
+
+- 官方故障排查文档：https://docs.openclaw.ai/troubleshooting
+- GitHub Issues：https://github.com/openclaw-ai/openclaw/issues

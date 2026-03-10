@@ -1,0 +1,122 @@
+# OpenClaw API Key 管理
+
+## Key 存储在哪里？
+
+OpenClaw 的 AI 模型 API Key **不是**存在配置文件的 `env` 或 `credentials` 中，而是存在：
+
+```
+~/.openclaw/agents/main/agent/models.json
+```
+
+### 多 Profile 时
+
+```
+# 默认 profile
+~/.openclaw/agents/main/agent/models.json
+
+# rescue profile
+~/.openclaw-rescue/agents/main/agent/models.json
+```
+
+## 配置 API Key
+
+### 方法一：通过配置向导
+
+运行 `openclaw onboard` 时会提示输入 API Key。
+
+### 方法二：复制到新 Profile
+
+如果你已经配置好主机器人，想把 Key 复制给救援机器人：
+
+```
+# 创建目录
+mkdir -p ~/.openclaw-rescue/agents/main/agent/
+
+# 复制 models.json
+cp ~/.openclaw/agents/main/agent/models.json ~/.openclaw-rescue/agents/main/agent/models.json
+
+# 重启服务
+openclaw --profile rescue gateway restart
+```
+
+## 切换模型
+
+### 支持的模型供应商
+
+- **Anthropic** - Claude 系列
+- **OpenAI** - GPT 系列
+- **OpenRouter** - 多模型聚合
+- **其他** - 本地模型、自定义 API
+
+### 修改模型配置
+
+```
+# 编辑配置文件
+nano ~/.openclaw/openclaw.json
+```
+
+找到 `agents.defaults.model` 部分：
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "claude-sonnet-4-6",
+        "models": [
+          "claude-sonnet-4-6",
+          "claude-opus-4-6",
+          "claude-haiku-4-5-20251001"
+        ]
+      }
+    }
+  }
+}
+```
+
+### 配置项说明
+
+| 参数 | 说明 |
+|------|------|
+| primary | 默认使用的模型 |
+| models | 允许使用的模型列表 |
+
+**注意：** 修改模型后需要重启 Gateway 才能生效。
+
+```
+openclaw gateway restart
+```
+
+## 验证 Key 配置
+
+### 查看 Key 文件
+
+```
+cat ~/.openclaw/agents/main/agent/models.json
+```
+
+### 在 TUI 中验证
+
+```
+# 启动 TUI
+openclaw tui
+
+# 问机器人
+你现在用的是哪个模型供应商？key 存在哪里
+```
+
+## 常见问题
+
+### 401 Missing Authentication
+
+**错误信息：**
+```
+Error: 401 Missing Authentication header
+```
+
+**原因：** API Key 没有正确配置
+
+**解决：**
+1. 检查 `models.json` 是否存在
+2. 检查 Key 格式是否正确
+3. 重启 Gateway

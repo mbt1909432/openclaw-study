@@ -1,0 +1,150 @@
+# OpenClaw 飞书集成配置
+
+## 飞书开放平台配置
+
+### 1. 创建飞书应用
+
+1. 访问 https://open.feishu.cn/
+2. 创建企业自建应用
+3. 记录 App ID 和 App Secret
+
+### 2. 配置应用权限
+
+在「权限管理」中添加以下权限：
+
+- 获取与更新群组信息
+- 接收群聊消息
+- 发送群聊消息
+- 获取用户信息
+
+### 3. 配置事件订阅
+
+在「事件订阅」中：
+
+- 请求网址：留空（稍后配置）
+- 添加事件：消息相关事件
+
+## OpenClaw 配置
+
+### 配置参数
+
+在 OpenClaw 配置文件中设置飞书参数：
+
+```
+# 编辑配置文件
+nano ~/.openclaw/openclaw.json
+```
+
+飞书配置示例：
+
+```json
+{
+  "plugins": {
+    "entries": {
+      "feishu": {
+        "app_id": "cli_xxxxxxxxxxxx",
+        "app_secret": "xxxxxxxxxxxxxxxxxx"
+      }
+    }
+  }
+}
+```
+
+### 配置项说明
+
+| 参数 | 说明 | 来源 |
+|------|------|------|
+| app_id | 飞书应用 ID | 飞书开放平台 → 凭证与基础信息 |
+| app_secret | 飞书应用密钥 | 飞书开放平台 → 凭证与基础信息 |
+
+## 启动并验证连接
+
+### 启动 Gateway
+
+```
+# 重启 Gateway
+openclaw gateway restart
+```
+
+### 检查连接状态
+
+```
+# 查看状态
+openclaw status
+
+# 查看日志
+openclaw logs --follow | grep -i "ws\|feishu"
+```
+
+### 连接成功的标志
+
+```
+feishu[default]: bot open_id resolved: ou_xxxxx
+feishu[default]: WebSocket client started
+[ '[ws]', 'ws client ready' ]
+```
+
+**重要顺序：**
+1. OpenClaw 启动 → WebSocket 连接成功
+2. 飞书后台检测到连接 → 显示"已检测到连接"
+3. 点击保存事件订阅
+
+## 常见问题
+
+### "未检测到应用连接信息"
+
+**原因：** App ID 或 App Secret 不匹配
+
+**排查步骤：**
+
+```
+# 1. 查看当前配置的 App ID
+grep -A 5 '"feishu"' ~/.openclaw/openclaw.json
+
+# 2. 对比飞书开放平台显示的 App ID 是否一致
+```
+
+**解决方法：**
+
+```
+# 1. 编辑配置文件，确保 App ID 和 Secret 正确
+nano ~/.openclaw/openclaw.json
+
+# 2. 重启 Gateway 触发重新连接
+openclaw gateway restart
+
+# 3. 查看日志确认连接成功
+openclaw logs --follow | grep -i "ws\|feishu"
+```
+
+### 更新飞书 Secret
+
+如果需要更换飞书 Secret：
+
+```
+# 1. 编辑配置文件
+nano ~/.openclaw/openclaw.json
+
+# 2. 修改 app_secret 字段
+
+# 3. 重启 Gateway
+openclaw gateway restart
+```
+
+## 测试机器人
+
+1. 将机器人添加到飞书群
+2. 在群里 @机器人 发送消息
+3. 查看日志确认收到消息
+
+```
+# 查看飞书消息日志
+openclaw logs --follow | grep feishu
+```
+
+成功时应该看到：
+
+```
+feishu[default]: message in group oc_xxx
+feishu[default]: dispatching to agent
+```
