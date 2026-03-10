@@ -142,36 +142,36 @@ export default function Home() {
       {/* 小红书关注 */}
       <section className="px-6 pb-20">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-3xl p-8 md:p-10 border border-rose-100">
-            <div className="flex flex-col md:flex-row items-center gap-8">
+          <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-3xl p-8 md:p-12 border border-rose-100">
+            <div className="flex flex-col md:flex-row items-center gap-10">
               <div className="flex-shrink-0">
-                <div className="bg-white p-4 rounded-2xl shadow-lg shadow-rose-100/50">
+                <div className="bg-white p-5 rounded-2xl shadow-xl shadow-rose-200/50">
                   <img
                     src="/xiaohongshu-qr.jpg"
                     alt="小红书二维码"
-                    className="w-40 h-40 rounded-lg"
+                    className="w-56 h-56 rounded-xl"
                   />
                 </div>
               </div>
               <div className="flex-1 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-rose-100 text-rose-600 text-sm font-medium rounded-full mb-4">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-rose-100 text-rose-600 text-sm font-medium rounded-full mb-5">
                   <span>📕</span>
-                  <span>关注小红书</span>
+                  <span>扫码关注小红书</span>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-800 mb-3">
+                <h3 className="text-3xl font-bold text-slate-800 mb-4">
                   获取更多 AI 实用技巧
                 </h3>
-                <p className="text-slate-600 mb-4 max-w-lg">
+                <p className="text-lg text-slate-600 mb-6 max-w-lg">
                   扫码关注我的小红书账号，分享 OpenClaw 使用技巧、AI 工具推荐、效率提升方法等干货内容。
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-white text-slate-600 text-sm rounded-full border border-rose-100">
+                <div className="flex flex-wrap gap-3">
+                  <span className="px-4 py-2 bg-white text-slate-700 text-sm rounded-full border border-rose-100 shadow-sm">
                     🤖 AI 工具教程
                   </span>
-                  <span className="px-3 py-1 bg-white text-slate-600 text-sm rounded-full border border-rose-100">
+                  <span className="px-4 py-2 bg-white text-slate-700 text-sm rounded-full border border-rose-100 shadow-sm">
                     💡 效率提升
                   </span>
-                  <span className="px-3 py-1 bg-white text-slate-600 text-sm rounded-full border border-rose-100">
+                  <span className="px-4 py-2 bg-white text-slate-700 text-sm rounded-full border border-rose-100 shadow-sm">
                     🎯 实战案例
                   </span>
                 </div>
