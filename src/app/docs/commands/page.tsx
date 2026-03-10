@@ -87,6 +87,12 @@ openclaw --profile rescue status   # 救援机器人状态`}</code>
           <h3 className="text-lg font-medium text-zinc-800 mb-3">状态输出解读</h3>
           <div className="border border-zinc-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
+              <thead className="bg-zinc-50">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">状态</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">含义</th>
+                </tr>
+              </thead>
               <tbody className="divide-y divide-zinc-100">
                 <tr>
                   <td className="px-4 py-3 font-mono text-emerald-600">running</td>
@@ -133,6 +139,12 @@ claw tui        # 简写`}</code>
 
           <div className="border border-zinc-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
+              <thead className="bg-zinc-50">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">快捷键</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">功能</th>
+                </tr>
+              </thead>
               <tbody className="divide-y divide-zinc-100">
                 <tr>
                   <td className="px-4 py-3 font-mono text-zinc-700">Ctrl+C</td>

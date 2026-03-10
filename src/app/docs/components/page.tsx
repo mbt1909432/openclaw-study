@@ -212,6 +212,12 @@ export default function ComponentsPage() {
 
           <div className="border border-zinc-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
+              <thead className="bg-zinc-50">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">组件</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">功能</th>
+                </tr>
+              </thead>
               <tbody className="divide-y divide-zinc-100">
                 <tr>
                   <td className="px-4 py-3 font-medium text-zinc-800">Session</td>

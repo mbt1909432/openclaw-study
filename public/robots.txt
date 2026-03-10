@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt/
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://openclaw-study.vercel.app/sitemap.xml
+
+# Disallow access to API routes
+Disallow: /api/
