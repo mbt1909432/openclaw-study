@@ -198,12 +198,19 @@ export default function Home() {
               <h4 className="font-semibold text-slate-800 mb-1">安装指南</h4>
               <p className="text-slate-400 text-sm">环境要求与安装方法</p>
             </Link>
-            <Link href="/docs/quickstart" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+            <Link href="/docs/architecture" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
               <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
-                  <span>🚀</span>
+                  <span>🏛️</span>
               </div>
-              <h4 className="font-semibold text-slate-800 mb-1">快速开始</h4>
-              <p className="text-slate-400 text-sm">配置向导与示例对话</p>
+              <h4 className="font-semibold text-slate-800 mb-1">整体架构</h4>
+              <p className="text-slate-400 text-sm">Gateway-Node-Channel 三层架构</p>
+            </Link>
+            <Link href="/docs/memory" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+              <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-emerald-100 transition-colors">
+                  <span>🧠</span>
+              </div>
+              <h4 className="font-semibold text-slate-800 mb-1">记忆系统</h4>
+              <p className="text-slate-400 text-sm">四层架构、向量搜索</p>
             </Link>
             <Link href="/docs/feishu" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
               <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-cyan-100 transition-colors">
@@ -211,13 +218,6 @@ export default function Home() {
               </div>
               <h4 className="font-semibold text-slate-800 mb-1">飞书集成</h4>
               <p className="text-slate-400 text-sm">飞书配置与连接验证</p>
-            </Link>
-            <Link href="/docs/components" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
-              <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-100 transition-colors">
-                  <span>🏗️</span>
-              </div>
-              <h4 className="font-semibold text-slate-800 mb-1">组件介绍</h4>
-              <p className="text-slate-400 text-sm">Gateway、Agent、Skills</p>
             </Link>
           </div>
         </div>
