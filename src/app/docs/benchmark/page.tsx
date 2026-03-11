@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Metadata } from 'next'
 
 export default function BenchmarkPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'design' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code' | 'faq' | 'advanced'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'design' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code' | 'codeguide' | 'faq' | 'advanced'>('overview')
 
   return (
     <div className="min-h-screen bg-white">
@@ -95,6 +95,16 @@ export default function BenchmarkPage() {
             }`}
           >
             代码示例
+          </button>
+          <button
+            onClick={() => setActiveTab('codeguide')}
+            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'codeguide'
+                ? 'border-violet-500 text-violet-600'
+                : 'border-transparent text-zinc-500 hover:text-zinc-700'
+            }`}
+          >
+            ALFWorld指南
           </button>
           <button
             onClick={() => setActiveTab('design')}
@@ -686,6 +696,477 @@ Step 9: random.choice() → "put 苹果 in fridge"
                 评估 Agent 在真实世界任务中的决策能力，需要信息检索、比较和决策。
               </p>
             </div>
+          </section>
+        )}
+
+        {/* ALFWorld Code Guide Tab */}
+        {activeTab === 'codeguide' && (
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-zinc-900 mb-6">ALFWorld Agent 代码指南</h2>
+            <p className="text-zinc-600 mb-8">基于 SkillNet 项目的 experiments/alfworld_run.py 代码解析</p>
+
+            {/* 1. 项目概述 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">1. 项目概述</h3>
+              <div className="bg-gradient-to-r from-violet-50 to-blue-50 rounded-xl p-6 mb-6 border border-violet-100">
+                <p className="text-zinc-700 mb-4">
+                  <strong>SkillNet</strong> 是一个 AI Agent 技能管理平台，类似于 npm 但专门用于 AI 能力。
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+                <div className="bg-blue-50 rounded-xl p-4 text-center">
+                  <span className="text-2xl">🔍</span>
+                  <p className="font-medium text-blue-800 mt-2">搜索</p>
+                  <p className="text-xs text-blue-600">从 20万+ 社区技能中搜索</p>
+                </div>
+                <div className="bg-green-50 rounded-xl p-4 text-center">
+                  <span className="text-2xl">📦</span>
+                  <p className="font-medium text-green-800 mt-2">安装</p>
+                  <p className="text-xs text-green-600">一行命令安装技能</p>
+                </div>
+                <div className="bg-amber-50 rounded-xl p-4 text-center">
+                  <span className="text-2xl">✨</span>
+                  <p className="font-medium text-amber-800 mt-2">自动创建</p>
+                  <p className="text-xs text-amber-600">从轨迹自动生成技能</p>
+                </div>
+                <div className="bg-violet-50 rounded-xl p-4 text-center">
+                  <span className="text-2xl">📊</span>
+                  <p className="font-medium text-violet-800 mt-2">5维评估</p>
+                  <p className="text-xs text-violet-600">安全性、完整性等评估</p>
+                </div>
+                <div className="bg-rose-50 rounded-xl p-4 text-center">
+                  <span className="text-2xl">🕸️</span>
+                  <p className="font-medium text-rose-800 mt-2">技能图谱</p>
+                  <p className="text-xs text-rose-600">自动发现技能关系</p>
+                </div>
+              </div>
+
+              <div className="bg-zinc-50 rounded-xl p-4">
+                <p className="text-sm text-zinc-600">
+                  <strong>项目地址：</strong>
+                  <a href="http://skillnet.openkg.cn/" className="text-blue-600 hover:underline ml-2" target="_blank" rel="noopener">skillnet.openkg.cn</a>
+                  <span className="mx-2">|</span>
+                  <a href="https://arxiv.org/abs/2603.04448" className="text-blue-600 hover:underline" target="_blank" rel="noopener">arXiv 论文</a>
+                </p>
+              </div>
+            </div>
+
+            {/* 2. 项目结构 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">2. 项目结构</h3>
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+{`SkillNet/
+├── skillnet-ai/              # Python SDK + CLI 工具
+├── experiments/              # 基准测试实验
+│   ├── alfworld_run.py       # ALFWorld 环境
+│   ├── scienceworld_run.py   # ScienceWorld 环境
+│   ├── webshop_run.py        # WebShop 环境
+│   └── src/
+│       ├── skill.py          # SkillModule 类
+│       ├── prompt_generator.py
+│       ├── alfworld/
+│       │   ├── base_config.yaml
+│       │   ├── prompts/system_prompt.py
+│       │   └── alfworld_procedure_code_template.py
+│       └── skills/
+│           └── alfworld/     # 37 个技能
+│               ├── alfworld-object-locator/
+│               │   ├── SKILL.md
+│               │   └── references/
+│               └── ...
+├── skills/                   # 技能定义目录
+├── examples/                 # 示例代码
+└── reports/                  # 评估报告`}
+                </pre>
+              </div>
+            </div>
+
+            {/* 3. Agent 运行流程 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">3. Agent 运行流程 (ReAct 模式)</h3>
+
+              <div className="bg-blue-50 rounded-xl p-5 mb-6">
+                <p className="text-sm text-blue-700 mb-3">这是一个<strong>自己手写的简单 Agent</strong>，采用经典的 ReAct (Reasoning + Acting) 模式：</p>
+                <div className="flex items-center justify-center gap-4 text-sm">
+                  <div className="bg-white rounded-lg px-4 py-2 border border-blue-200">
+                    <p className="font-medium text-blue-800">Thought</p>
+                    <p className="text-xs text-blue-600">(思考推理)</p>
+                  </div>
+                  <span className="text-blue-400">→</span>
+                  <div className="bg-white rounded-lg px-4 py-2 border border-blue-200">
+                    <p className="font-medium text-blue-800">Action</p>
+                    <p className="text-xs text-blue-600">(执行动作)</p>
+                  </div>
+                  <span className="text-blue-400">→</span>
+                  <div className="bg-white rounded-lg px-4 py-2 border border-blue-200">
+                    <p className="font-medium text-blue-800">Observation</p>
+                    <p className="text-xs text-blue-600">(观察结果)</p>
+                  </div>
+                  <span className="text-blue-400">→ 循环</span>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-zinc-50 rounded-xl p-5">
+                  <p className="font-medium text-zinc-800 mb-3">为什么输出 "Thought...Action..." 格式？</p>
+                  <p className="text-sm text-zinc-600">因为 <strong>System Prompt 规定了输出格式</strong>：</p>
+                  <div className="bg-zinc-800 rounded-lg p-3 mt-2">
+                    <code className="text-xs text-green-400">
+                      Your response should use the following format:<br/>
+                      Thought: &lt;your thoughts&gt;<br/>
+                      Action: &lt;your next action&gt;
+                    </code>
+                  </div>
+                </div>
+                <div className="bg-amber-50 rounded-xl p-5">
+                  <p className="font-medium text-amber-800 mb-3">为什么不用 Function Calling？</p>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full text-xs">
+                      <tbody className="text-amber-700">
+                        <tr><td>兼容性</td><td className="text-green-600">✅ 任何 LLM</td></tr>
+                        <tr><td>输出格式</td><td>纯文本</td></tr>
+                        <tr><td>动作解析</td><td>正则表达式</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. 核心代码解析 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">4. 核心代码解析</h3>
+
+              {/* @retry 装饰器 */}
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">4.1 @retry 装饰器</p>
+                <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                  <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+{`@retry(tries=5, delay=5, backoff=2, jitter=(1, 3))
+def llm(prompt, model="YOUR_MODEL_NAME"):
+    ...
+
+# 重试时间线：
+# 第1次失败 → 等待 5+rand 秒 → 第2次
+# 第2次失败 → 等待 10+rand 秒 → 第3次
+# 第3次失败 → 等待 20+rand 秒 → 第4次
+# 第4次失败 → 等待 40+rand 秒 → 第5次
+# 第5次失败 → 抛出异常`}
+                  </pre>
+                </div>
+              </div>
+
+              {/* parse_action */}
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">4.2 parse_action() 正则解析</p>
+                <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                  <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+{`def parse_action(response: str) -> str:
+    pattern = re.compile(r"Action:\\s*(.+)", re.IGNORECASE)
+    match = pattern.search(response)
+    if match:
+        return match.group(1).strip().strip('"\\'*\\`')
+    return ""
+
+# 解析过程：
+# 输入: "Thought: 找苹果\\nAction: go to countertop"
+# 正则匹配: "Action:" + 空格 + 捕获组
+# 输出: "go to countertop"`}
+                  </pre>
+                </div>
+              </div>
+
+              {/* run_standard_procedure */}
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">4.3 run_standard_procedure() Agent 循环</p>
+                <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                  <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+{`def run_standard_procedure(env, llm, model, process_ob, messages, max_steps):
+    while not task_done and current_steps < max_steps:
+        current_steps += 1
+
+        # 1. LLM 思考并输出
+        response = llm(messages, model)
+        messages.append({"role": "assistant", "content": response})
+
+        # 2. 正则解析动作
+        action = parse_action(response)
+
+        # 3. 环境执行
+        observation, reward, done, info = env.step([action])
+
+        # 4. 处理观察
+        observation, task_done = process_ob(observation[0]), done[0]
+
+        # 5. 更新历史
+        messages.append({"role": "user", "content": f"Observation: {observation}"})
+
+    return messages, task_done, reward, current_steps`}
+                  </pre>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. Skill 技能系统 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">5. Skill 技能系统</h3>
+
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-r-xl p-5 mb-6">
+                <p className="font-medium text-green-800">Skill 是预定义的</p>
+                <p className="text-sm text-green-700 mt-2">存放在文件系统中，从 ETO 专家轨迹自动合成</p>
+              </div>
+
+              {/* SKILL.md 格式 */}
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">SKILL.md 文件格式</p>
+                <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                  <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+{`---
+name: alfworld-object-locator
+description: 扫描环境观察，定位目标物体的位置...
+---
+
+# Skill: Object Locator for ALFWorld
+
+## When to Use
+1. 目标需要特定物体
+2. 物体不在手中
+3. 观察中没有明确说明物体位置
+
+## Core Logic
+1. 解析观察：提取所有容器
+2. 分析可能性：用常识判断物体最可能在哪
+3. 输出动作：导航到最可能的容器`}
+                  </pre>
+                </div>
+              </div>
+
+              {/* SkillModule 类 */}
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">SkillModule 核心方法</p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-blue-50 rounded-xl p-4">
+                    <p className="font-medium text-blue-800 text-sm mb-2">retrieve_relevant_skills()</p>
+                    <p className="text-xs text-blue-600">从 metadata 中检索相关技能 (LLM 语义匹配)</p>
+                  </div>
+                  <div className="bg-green-50 rounded-xl p-4">
+                    <p className="font-medium text-green-800 text-sm mb-2">generate_overall_procedure()</p>
+                    <p className="text-xs text-green-600">读取完整技能内容，生成执行指导</p>
+                  </div>
+                  <div className="bg-amber-50 rounded-xl p-4">
+                    <p className="font-medium text-amber-800 text-sm mb-2">generate_overall_procedure_code()</p>
+                    <p className="text-xs text-amber-600">生成可执行 Python 代码</p>
+                  </div>
+                  <div className="bg-violet-50 rounded-xl p-4">
+                    <p className="font-medium text-violet-800 text-sm mb-2">exec(code, namespace)</p>
+                    <p className="text-xs text-violet-600">动态执行生成的代码</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 6. 37 个 Skill */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">6. 为什么是 37 个 Skill？</h3>
+
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">ALFWorld 的 6 种任务类型</p>
+                <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-3">
+                  <div className="bg-blue-50 rounded-lg p-3 text-center">
+                    <p className="text-xs text-blue-600">ID 1</p>
+                    <p className="font-medium text-blue-800 text-sm">Pick & Place</p>
+                    <p className="text-xs text-blue-600 mt-1">拿苹果放冰箱</p>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3 text-center">
+                    <p className="text-xs text-green-600">ID 2</p>
+                    <p className="font-medium text-green-800 text-sm">Examine in Light</p>
+                    <p className="text-xs text-green-600 mt-1">拿到灯下看</p>
+                  </div>
+                  <div className="bg-amber-50 rounded-lg p-3 text-center">
+                    <p className="text-xs text-amber-600">ID 3</p>
+                    <p className="font-medium text-amber-800 text-sm">Clean & Place</p>
+                    <p className="text-xs text-amber-600 mt-1">洗碗放柜子</p>
+                  </div>
+                  <div className="bg-violet-50 rounded-lg p-3 text-center">
+                    <p className="text-xs text-violet-600">ID 4</p>
+                    <p className="font-medium text-violet-800 text-sm">Heat & Place</p>
+                    <p className="text-xs text-violet-600 mt-1">加热食物</p>
+                  </div>
+                  <div className="bg-rose-50 rounded-lg p-3 text-center">
+                    <p className="text-xs text-rose-600">ID 5</p>
+                    <p className="font-medium text-rose-800 text-sm">Cool & Place</p>
+                    <p className="text-xs text-rose-600 mt-1">冷却饮料</p>
+                  </div>
+                  <div className="bg-cyan-50 rounded-lg p-3 text-center">
+                    <p className="text-xs text-cyan-600">ID 6</p>
+                    <p className="font-medium text-cyan-800 text-sm">Pick Two</p>
+                    <p className="text-xs text-cyan-600 mt-1">拿两个放一起</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-zinc-50 rounded-xl p-5 mb-6">
+                <p className="font-medium text-zinc-800 mb-3">设计原则：原子化 + 可组合</p>
+                <p className="text-sm text-zinc-600 mb-3">不是设计 6 个大技能，而是设计 37 个可复用的原子能力</p>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="font-medium text-zinc-700 mb-2">❌ 太少 (6个)</p>
+                    <ul className="text-xs text-zinc-500 space-y-1">
+                      <li>• 每个技能太大，不够灵活</li>
+                      <li>• 难以复用</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-medium text-zinc-700 mb-2">❌ 太多 (100个)</p>
+                    <ul className="text-xs text-zinc-500 space-y-1">
+                      <li>• 检索成本高</li>
+                      <li>• 维护困难，技能重叠</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* 37个技能分类 */}
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+{`37 个 Skill 分类:
+
+【导航类】(6个)
+├── alfworld-location-navigator    # 导航到位置
+├── alfworld-receptacle-navigator  # 导航到容器
+├── alfworld-navigation-planner    # 导航规划
+└── ...
+
+【定位类】(5个)
+├── alfworld-object-locator        # 定位物体
+├── alfworld-receptacle-finder     # 找容器
+└── ...
+
+【操作类-物体】(8个)
+├── alfworld-object-picker         # 拿起物体
+├── alfworld-object-placer         # 放置物体
+└── ...
+
+【操作类-容器】(6个)
+├── alfworld-receptacle-opener     # 打开容器
+├── alfworld-receptacle-closer     # 关闭容器
+└── ...
+
+【状态修改类】(4个)
+├── alfworld-object-heater         # 加热物体
+├── alfworld-object-cooler         # 冷却物体
+└── ...
+
+【设备操作类】(4个) + 【任务管理类】(4个)`}
+                </pre>
+              </div>
+            </div>
+
+            {/* 7. 完整数据流转图 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">7. 完整数据流转图</h3>
+
+              <div className="bg-zinc-900 rounded-xl p-6 text-white mb-6">
+                <p className="font-semibold mb-4">Agent 循环</p>
+                <pre className="text-sm text-green-400 font-mono">
+{`messages = [system_prompt, task]
+        │
+        ▼
+┌──────────────────────────────────────────┐
+│ while not task_done:                     │
+│                                          │
+│   LLM(messages)                          │
+│       ↓                                  │
+│   "Thought: 我需要找苹果                 │
+│    Action: go to countertop"             │
+│       ↓                                  │
+│   parse_action() → "go to countertop"    │
+│       ↓                                  │
+│   env.step(["go to countertop"])         │
+│       ↓                                  │
+│   "On the countertop, you see apple 1.." │
+│       ↓                                  │
+│   messages.append(observation)           │
+│                                          │
+│   ... 循环直到完成 ...                   │
+│                                          │
+└──────────────────────────────────────────┘
+        │
+        ▼
+   return messages, task_done, reward, steps`}
+                </pre>
+              </div>
+
+              <div className="bg-blue-50 rounded-xl p-5">
+                <p className="font-medium text-blue-800 mb-3">messages 变化过程</p>
+                <div className="bg-zinc-800 rounded-lg p-3">
+                  <code className="text-xs text-green-400">
+{`# 初始
+messages = [
+    {"role": "system", "content": "你是Agent..."},
+    {"role": "user", "content": "任务: 把苹果放冰箱"}
+]
+
+# 第1轮后
+messages = [
+    ...,
+    {"role": "assistant", "content": "Thought: 找苹果\\nAction: go to countertop"},
+    {"role": "user", "content": "Observation: On the countertop..."}
+]
+
+# 第2轮后
+messages = [
+    ...,
+    {"role": "assistant", "content": "Thought: 拿苹果\\nAction: take apple 1..."},
+    {"role": "user", "content": "Observation: You pick up the apple 1."}
+]`}
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            {/* 8. 运行命令 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">8. 运行命令</h3>
+
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+{`cd experiments
+
+# 设置环境变量
+export API_KEY="sk-xxx"
+export BASE_URL="https://api.openai.com/v1"
+
+# 标准模式
+python alfworld_run.py --model gpt-4o --split dev
+
+# 技能增强模式
+python alfworld_run.py --model gpt-4o --split dev --use_skill
+
+# 并行执行 (10 个进程)
+python alfworld_run.py --model gpt-4o --max_workers 10 --use_skill`}
+                </pre>
+              </div>
+            </div>
+
+            {/* 9. 一句话总结 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">一句话总结</h3>
+
+              <div className="bg-gradient-to-r from-violet-50 to-blue-50 rounded-xl p-6 border border-violet-100">
+                <p className="text-zinc-700">
+                  <strong>ALFWorld Agent</strong> 就是一个简单的 ReAct 循环：<br/>
+                  LLM 看历史 → 输出 "Thought...Action..." → 正则提取 → 环境执行 → 观察反馈 → 循环
+                </p>
+                <p className="text-zinc-600 mt-4">
+                  <strong>Skill 系统</strong> 通过预定义的技能文件增强 Agent：<br/>
+                  检索技能 → 读取内容 → LLM 生成指导 → LLM 生成代码 → exec 执行
+                </p>
+              </div>
+            </div>
+
           </section>
         )}
 
