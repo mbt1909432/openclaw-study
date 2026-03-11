@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Metadata } from 'next'
 
 export default function BenchmarkPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code' | 'faq'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'design' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code' | 'faq'>('overview')
 
   return (
     <div className="min-h-screen bg-white">
@@ -95,6 +95,16 @@ export default function BenchmarkPage() {
             }`}
           >
             代码示例
+          </button>
+          <button
+            onClick={() => setActiveTab('design')}
+            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'design'
+                ? 'border-violet-500 text-violet-600'
+                : 'border-transparent text-zinc-500 hover:text-zinc-700'
+            }`}
+          >
+            设计指南
           </button>
           <button
             onClick={() => setActiveTab('skillnet')}
@@ -666,6 +676,511 @@ Step 9: random.choice() → "put 苹果 in fridge"
                 评估 Agent 在真实世界任务中的决策能力，需要信息检索、比较和决策。
               </p>
             </div>
+          </section>
+        )}
+
+        {/* Design Guide Tab */}
+        {activeTab === 'design' && (
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-zinc-900 mb-6">Memory/Skill 系统 Benchmark 设计指南</h2>
+            <p className="text-zinc-600 mb-8">基于 SkillNet 论文的学习，设计一个通用的 Benchmark 来评估 Memory/Skill 系统的效果</p>
+
+            {/* 一、核心目标 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">一、Benchmark 的核心目标</h3>
+
+              <div className="bg-violet-50 border-l-4 border-violet-500 rounded-r-xl p-5 mb-6">
+                <p className="font-medium text-violet-800 mb-2">核心假设</p>
+                <p className="text-sm text-violet-700">有 Memory/Skill 系统的 Agent 比没有的表现更好</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-medium text-green-800 mb-3">具体表现</p>
+                  <ul className="text-sm text-green-700 space-y-2">
+                    <li>• <strong>成功率更高</strong> - 能复用成功经验</li>
+                    <li>• <strong>步数更少</strong> - 知道最优路径</li>
+                    <li>• <strong>学习曲线更陡</strong> - 多轮后提升明显</li>
+                    <li>• <strong>泛化能力更强</strong> - 能处理新任务</li>
+                  </ul>
+                </div>
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-medium text-blue-800 mb-3">评估维度</p>
+                  <ul className="text-sm text-blue-700 space-y-2">
+                    <li>• <strong>成功率</strong> - 成功数 / 总任务数</li>
+                    <li>• <strong>执行效率</strong> - 平均步数 (越少越好)</li>
+                    <li>• <strong>学习效果</strong> - 后 N 轮 - 前 N 轮</li>
+                    <li>• <strong>记忆利用率</strong> - 复用次数 / 总决策数</li>
+                    <li>• <strong>泛化能力</strong> - 未见任务的成功率</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* 二、实验设计核心原则 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">二、实验设计核心原则</h3>
+
+              <div className="bg-zinc-50 rounded-xl p-5 mb-6">
+                <p className="font-semibold text-zinc-800 mb-3">控制变量法</p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm font-medium text-zinc-700 mb-2">✅ 控制变量 (保持一致)</p>
+                    <ul className="text-sm text-zinc-600 space-y-1">
+                      <li>• 相同的 LLM (如 GPT-4, Claude, DeepSeek)</li>
+                      <li>• 相同的环境 (ALFWorld / WebShop / 自定义)</li>
+                      <li>• 相同的 Agent 代码框架</li>
+                      <li>• 相同的任务集</li>
+                      <li>• 相同的评估指标</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-zinc-700 mb-2">🔀 唯一变量</p>
+                    <div className="bg-amber-50 rounded-lg p-3">
+                      <p className="text-sm text-amber-700 font-medium">是否使用 Memory/Skill 系统</p>
+                      <p className="text-xs text-amber-600 mt-1">对照组: Agent WITHOUT Memory</p>
+                      <p className="text-xs text-amber-600">实验组: Agent WITH Memory</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 对比组设计 */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-orange-50 rounded-xl p-5">
+                  <p className="font-semibold text-orange-800 mb-3">Baseline (对照组)</p>
+                  <p className="text-xs text-orange-600 mb-3">Agent WITHOUT Memory</p>
+                  <ul className="text-sm text-orange-700 space-y-1">
+                    <li>• 每次任务从零开始</li>
+                    <li>• 不存储任何经验</li>
+                    <li>• 不检索任何历史</li>
+                    <li>• 使用标准的 ReAct 循环</li>
+                  </ul>
+                  <div className="mt-3 text-xs text-orange-500 border-t border-orange-200 pt-2">
+                    预期: 表现稳定，不随时间提升
+                  </div>
+                </div>
+                <div className="bg-emerald-50 rounded-xl p-5">
+                  <p className="font-semibold text-emerald-800 mb-3">Experimental (实验组)</p>
+                  <p className="text-xs text-emerald-600 mb-3">Agent WITH Memory/Skill System</p>
+                  <ul className="text-sm text-emerald-700 space-y-1">
+                    <li>• 任务完成后存储经验到 Memory</li>
+                    <li>• 开始任务前检索相关记忆</li>
+                    <li>• 使用 Memory 系统 SDK</li>
+                    <li>• 自动提取和存储技能</li>
+                  </ul>
+                  <div className="mt-3 text-xs text-emerald-500 border-t border-emerald-200 pt-2">
+                    预期: 多轮后表现显著提升
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 三、Agent 代码框架 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">三、Agent 代码框架</h3>
+
+              {/* BaselineAgent */}
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">3.1 基础 Agent (对照组)</p>
+                <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+                    <span className="text-zinc-400 text-sm">baseline_agent.py</span>
+                  </div>
+                  <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                    <code>{`class BaselineAgent:
+    """无 Memory 的 Agent"""
+
+    def __init__(self, llm_client, system_prompt: str):
+        self.llm = llm_client
+        self.system_prompt = system_prompt
+        self.history = []  # 仅当前会话的历史，不持久化
+
+    def act(self, observation: str, task: str) -> str:
+        """选择下一步动作"""
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": f"任务: {task}\\n\\n当前观察: {observation}"}
+        ]
+        messages.extend(self.history)
+
+        # LLM 决策
+        response = self.llm.generate(messages)
+        self.history.append({"role": "assistant", "content": response})
+
+        # 解析动作
+        return self.parse_action(response)
+
+    def parse_action(self, response: str) -> str:
+        """从 LLM 响应中解析动作"""
+        import re
+        pattern = r"Action:\\s*(.+)"
+        match = re.search(pattern, response, re.IGNORECASE)
+        return match.group(1).strip() if match else ""
+
+    def reset(self):
+        """重置会话 (不保留任何记忆)"""
+        self.history = []`}</code>
+                  </pre>
+                </div>
+              </div>
+
+              {/* MemoryAgent */}
+              <div className="mb-6">
+                <p className="font-medium text-zinc-700 mb-3">3.2 带 Memory 的 Agent (实验组)</p>
+                <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+                    <span className="text-zinc-400 text-sm">memory_agent.py</span>
+                  </div>
+                  <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                    <code>{`class MemoryAgent:
+    """带 Memory/Skill 系统的 Agent"""
+
+    def __init__(self, llm_client, memory_client, system_prompt: str):
+        self.llm = llm_client
+        self.memory = memory_client  # Memory/Skill 系统客户端
+        self.system_prompt = system_prompt
+        self.history = []
+
+    def retrieve_relevant_memories(self, task: str) -> list:
+        """从 Memory 系统检索相关记忆"""
+        return self.memory.search(query=task, top_k=5)
+
+    def act(self, observation: str, task: str) -> str:
+        """选择下一步动作 (带记忆)"""
+        # 1. 检索相关记忆
+        memories = self.retrieve_relevant_memories(task)
+        memory_context = self.format_memories(memories)
+
+        # 2. 构建消息 (包含记忆)
+        messages = [{"role": "system", "content": self.system_prompt}]
+
+        # 注入记忆到 prompt
+        if memory_context:
+            messages.append({
+                "role": "system",
+                "content": f"你可以参考以下历史经验:\\n{memory_context}"
+            })
+
+        # 3. LLM 决策
+        response = self.llm.generate(messages)
+        return self.parse_action(response)
+
+    def store_experience(self, task: str, trajectory: list, success: bool):
+        """存储经验到 Memory 系统"""
+        if success:
+            self.memory.store(task=task, trajectory=trajectory)`}</code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+
+            {/* 四、Benchmark 运行器 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">四、Benchmark 运行器</h3>
+
+              <div className="bg-zinc-900 rounded-xl overflow-hidden mb-6">
+                <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+                  <span className="text-zinc-400 text-sm">benchmark_runner.py</span>
+                </div>
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`class BenchmarkRunner:
+    """Benchmark 运行器"""
+
+    def __init__(self, env, baseline_agent, memory_agent,
+                 tasks: List[str], num_episodes: int = 10):
+        self.env = env
+        self.baseline = baseline_agent
+        self.memory_agent = memory_agent
+        self.tasks = tasks
+        self.num_episodes = num_episodes
+        self.results = []
+
+    def run(self):
+        """运行完整 Benchmark"""
+        for episode in range(self.num_episodes):
+            for task in self.tasks:
+                # 1. 运行对照组
+                baseline_result = self.baseline.run_episode(self.env, task)
+                self.results.append(EpisodeResult(
+                    task=task, agent_type="baseline",
+                    success=baseline_result["success"],
+                    steps=baseline_result["steps"], episode=episode
+                ))
+
+                # 2. 运行实验组
+                memory_result = self.memory_agent.run_episode(self.env, task)
+                self.results.append(EpisodeResult(
+                    task=task, agent_type="memory",
+                    success=memory_result["success"],
+                    steps=memory_result["steps"], episode=episode
+                ))
+        return self
+
+    def compute_metrics(self, agent_type: str) -> dict:
+        """计算指标"""
+        results = [r for r in self.results if r.agent_type == agent_type]
+        successes = [r for r in results if r.success]
+
+        # 学习曲线: 计算每轮的成功率
+        learning_curve = []
+        for ep in range(self.num_episodes):
+            ep_results = [r for r in results if r.episode == ep]
+            ep_successes = [r for r in ep_results if r.success]
+            ep_rate = len(ep_successes) / len(ep_results) if ep_results else 0
+            learning_curve.append(ep_rate)
+
+        return {
+            "success_rate": len(successes) / len(results),
+            "avg_steps": sum(r.steps for r in results) / len(results),
+            "learning_curve": learning_curve
+        }`}</code>
+                </pre>
+              </div>
+            </div>
+
+            {/* 五、环境选择 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">五、环境选择</h3>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">环境</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">难度</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">特点</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">安装</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">模拟环境</td><td className="px-4 py-3 text-sm text-green-600">简单</td><td className="px-4 py-3 text-sm text-zinc-500">无依赖，跨平台</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">自己写</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">ALFWorld</td><td className="px-4 py-3 text-sm text-yellow-600">中等</td><td className="px-4 py-3 text-sm text-zinc-500">学术标准，家务任务</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">pip install alfworld</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">WebShop</td><td className="px-4 py-3 text-sm text-yellow-600">中等</td><td className="px-4 py-3 text-sm text-zinc-500">电商购物任务</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">需要配置</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">自定义</td><td className="px-4 py-3 text-sm text-blue-600">可控</td><td className="px-4 py-3 text-sm text-zinc-500">针对 Memory 特点设计</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">自己写</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* 六、评估指标详解 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">六、评估指标详解</h3>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-2">1. 成功率 (Success Rate)</p>
+                  <p className="text-xs text-blue-600 mb-2">成功完成的任务 / 总任务数</p>
+                  <p className="text-sm text-blue-700">Agent 能否正确完成任务，目标越高越好</p>
+                </div>
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-semibold text-green-800 mb-2">2. 平均步数 (Average Steps)</p>
+                  <p className="text-xs text-green-600 mb-2">完成任务平均用了多少步</p>
+                  <p className="text-sm text-green-700">Agent 的执行效率，目标越少越好</p>
+                </div>
+                <div className="bg-amber-50 rounded-xl p-5">
+                  <p className="font-semibold text-amber-800 mb-2">3. 学习曲线 (Learning Curve)</p>
+                  <p className="text-xs text-amber-600 mb-2">每轮成功率的序列</p>
+                  <p className="text-sm text-amber-700">Agent 是否在学习进步，目标曲线上升</p>
+                </div>
+                <div className="bg-violet-50 rounded-xl p-5">
+                  <p className="font-semibold text-violet-800 mb-2">4. 记忆利用率 (Memory Reuse Rate)</p>
+                  <p className="text-xs text-violet-600 mb-2">复用记忆的次数 / 总决策数</p>
+                  <p className="text-sm text-violet-700">Memory 系统是否被有效使用，适度为佳</p>
+                </div>
+                <div className="bg-rose-50 rounded-xl p-5">
+                  <p className="font-semibold text-rose-800 mb-2">5. 泛化能力 (Generalization)</p>
+                  <p className="text-xs text-rose-600 mb-2">在未见任务上的成功率</p>
+                  <p className="text-sm text-rose-700">Memory 是否能迁移到新任务，越高越好</p>
+                </div>
+              </div>
+
+              {/* 预期学习曲线 */}
+              <div className="bg-zinc-900 rounded-xl p-6 text-white">
+                <p className="font-semibold mb-4">预期学习曲线</p>
+                <pre className="text-sm text-green-400 font-mono">
+{`成功率
+  │
+1.0├─────────────────────────────●●●●●● Memory Agent
+   │                     ●●●●●●
+0.8├───────────────●●●●
+   │          ●●●●
+0.6├─────●●●●
+   │ ●●●
+0.4├─●─────────────────────────────────── Baseline Agent
+   │●
+0.2├
+   └─────────────────────────────────────▶ 轮次
+     1   2   3   4   5   6   7   8   9  10`}
+                </pre>
+                <p className="text-xs text-zinc-400 mt-4">
+                  Baseline: 表现稳定，不随时间变化<br/>
+                  Memory: 多轮后显著提升，证明 Memory 系统有效
+                </p>
+              </div>
+            </div>
+
+            {/* 七、完整流程 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">七、Benchmark 完整流程</h3>
+
+              <div className="space-y-4">
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-3">Phase 1: 准备</p>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>1. 选择环境 (模拟/ALFWorld/自定义)</li>
+                    <li>2. 准备任务集 (10-50 个任务)</li>
+                    <li>3. 配置 LLM API</li>
+                    <li>4. 配置 Memory 系统 API (如果有)</li>
+                  </ul>
+                </div>
+
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-semibold text-green-800 mb-3">Phase 2: 实现</p>
+                  <ul className="text-sm text-green-700 space-y-1">
+                    <li>1. 实现 BaselineAgent (无记忆)</li>
+                    <li>2. 实现 MemoryAgent (有记忆)</li>
+                    <li>3. 实现 BenchmarkRunner</li>
+                    <li>4. 实现评估指标计算</li>
+                  </ul>
+                </div>
+
+                <div className="bg-amber-50 rounded-xl p-5">
+                  <p className="font-semibold text-amber-800 mb-3">Phase 3: 运行</p>
+                  <div className="bg-amber-100 rounded-lg p-3">
+                    <code className="text-xs text-amber-800">
+                      for episode in range(N_EPISODES):<br/>
+                      &nbsp;&nbsp;for task in tasks:<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;baseline_result = baseline_agent.run(task)<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;memory_result = memory_agent.run(task)<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;record_results(...)
+                    </code>
+                  </div>
+                </div>
+
+                <div className="bg-violet-50 rounded-xl p-5">
+                  <p className="font-semibold text-violet-800 mb-3">Phase 4: 分析</p>
+                  <ul className="text-sm text-violet-700 space-y-1">
+                    <li>1. 计算各指标</li>
+                    <li>2. 绘制学习曲线</li>
+                    <li>3. 统计显著性检验 (t-test)</li>
+                    <li>4. 生成对比报告</li>
+                  </ul>
+                </div>
+
+                <div className="bg-rose-50 rounded-xl p-5">
+                  <p className="font-semibold text-rose-800 mb-3">Phase 5: 结论</p>
+                  <ul className="text-sm text-rose-700 space-y-1">
+                    <li>• Memory 系统是否有效？</li>
+                    <li>• 提升了多少？</li>
+                    <li>• 在什么场景下最有效？</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* 八、快速开始模板 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">八、快速开始模板</h3>
+
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+                  <span className="text-zinc-400 text-sm">quick_start.py</span>
+                </div>
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`# 1. 初始化
+from my_llm import LLMClient
+from my_memory import MemoryClient
+from my_env import SimulatedEnvironment
+
+llm = LLMClient(api_key="...")
+memory = MemoryClient(api_key="...")
+env = SimulatedEnvironment()
+
+# 2. 创建 Agent
+baseline = BaselineAgent(llm, system_prompt="...")
+memory_agent = MemoryAgent(llm, memory, system_prompt="...")
+
+# 3. 定义任务
+tasks = [
+    "把苹果放进冰箱",
+    "找到钥匙并开门",
+    "整理书架",
+]
+
+# 4. 运行 Benchmark
+runner = BenchmarkRunner(
+    env=env,
+    baseline_agent=baseline,
+    memory_agent=memory_agent,
+    tasks=tasks,
+    num_episodes=10
+)
+
+runner.run()
+
+# 5. 查看结果
+print(runner.generate_report())
+
+# 6. 保存数据
+runner.save_results("benchmark_results.json")`}</code>
+                </pre>
+              </div>
+            </div>
+
+            {/* 九、总结 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">九、设计要点与成功标准</h3>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-zinc-50 rounded-xl p-5">
+                  <p className="font-semibold text-zinc-800 mb-3">设计要点</p>
+                  <ul className="text-sm text-zinc-600 space-y-2">
+                    <li><strong>控制变量</strong> - 只改变"是否使用 Memory"，其他都一样</li>
+                    <li><strong>公平对比</strong> - 两个 Agent 用相同代码框架</li>
+                    <li><strong>多轮测试</strong> - 至少 10 轮，看学习曲线</li>
+                    <li><strong>多指标评估</strong> - 成功率、步数、学习曲线、泛化能力</li>
+                    <li><strong>结果可复现</strong> - 保存原始数据，设置随机种子</li>
+                  </ul>
+                </div>
+
+                <div className="bg-emerald-50 rounded-xl p-5">
+                  <p className="font-semibold text-emerald-800 mb-3">成功标准</p>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full">
+                      <thead>
+                        <tr>
+                          <th className="text-left text-xs text-emerald-600 pb-2">指标</th>
+                          <th className="text-left text-xs text-emerald-600 pb-2">最低要求</th>
+                          <th className="text-left text-xs text-emerald-600 pb-2">理想目标</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-sm text-emerald-700">
+                        <tr><td>成功率提升</td><td>+10%</td><td>+30%</td></tr>
+                        <tr><td>步数减少</td><td>-10%</td><td>-30%</td></tr>
+                        <tr><td>学习曲线</td><td>后半段 &gt; 前半段</td><td>持续上升</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 十、参考资料 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">十、参考资料</h3>
+
+              <div className="bg-zinc-50 rounded-xl p-5">
+                <ul className="text-sm text-zinc-600 space-y-2">
+                  <li>• <a href="https://arxiv.org/html/2603.04448v1" className="text-blue-600 hover:underline" target="_blank" rel="noopener">SkillNet 论文</a></li>
+                  <li>• <a href="https://arxiv.org/abs/2210.03629" className="text-blue-600 hover:underline" target="_blank" rel="noopener">ReAct 论文</a></li>
+                  <li>• <a href="https://arxiv.org/abs/2308.10144" className="text-blue-600 hover:underline" target="_blank" rel="noopener">ExpeL 论文</a></li>
+                  <li>• <a href="https://github.com/alfworld/alfworld" className="text-blue-600 hover:underline" target="_blank" rel="noopener">ALFWorld GitHub</a></li>
+                  <li>• <a href="https://github.com/princeton-nlp/WebShop" className="text-blue-600 hover:underline" target="_blank" rel="noopener">WebShop GitHub</a></li>
+                </ul>
+              </div>
+            </div>
+
           </section>
         )}
 
