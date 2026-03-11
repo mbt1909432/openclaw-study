@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Metadata } from 'next'
 
 export default function BenchmarkPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'design' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code' | 'faq'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'design' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code' | 'faq' | 'advanced'>('overview')
 
   return (
     <div className="min-h-screen bg-white">
@@ -125,6 +125,16 @@ export default function BenchmarkPage() {
             }`}
           >
             常见问题
+          </button>
+          <button
+            onClick={() => setActiveTab('advanced')}
+            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'advanced'
+                ? 'border-violet-500 text-violet-600'
+                : 'border-transparent text-zinc-500 hover:text-zinc-700'
+            }`}
+          >
+            进阶问题
           </button>
         </div>
 
@@ -1943,6 +1953,513 @@ print(f"效率提升: {improvement:.1f}%")`}</code>
                     <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Ablation</td><td className="px-4 py-3 text-sm text-zinc-500">消融实验，去掉某功能看效果</td></tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+          </section>
+        )}
+
+        {/* Advanced FAQ Tab */}
+        {activeTab === 'advanced' && (
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-zinc-900 mb-6">进阶问题 (Online Learning 篇)</h2>
+            <p className="text-zinc-600 mb-8">记录关于 Online Learning 和动态技能学习的深入问题</p>
+
+            {/* Q1: Acontext 是 Online Learning 吗？ */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q1: Acontext 是 Online Learning 吗？</h3>
+
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-r-xl p-5 mb-6">
+                <p className="font-semibold text-green-800">是的！Acontext 就是 Online Learning 的一种形式。</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-orange-50 rounded-xl p-5">
+                  <p className="font-semibold text-orange-800 mb-3">Offline Learning (SkillNet 用的)</p>
+                  <p className="text-sm text-orange-700 mb-3">流程: 先收集 → 再提取 → 固定使用</p>
+                  <div className="text-xs text-orange-600 space-y-1">
+                    <p>1. 专家轨迹 (ETO)</p>
+                    <p>2. 提取技能 (离线)</p>
+                    <p>3. 固定技能库 (37个)</p>
+                    <p>4. 跑 Benchmark (只检索，不学习)</p>
+                  </div>
+                  <div className="mt-3 text-xs text-orange-500 border-t border-orange-200 pt-2">
+                    ❌ 技能库是静态的，部署后不会改变
+                  </div>
+                </div>
+                <div className="bg-emerald-50 rounded-xl p-5">
+                  <p className="font-semibold text-emerald-800 mb-3">Online Learning (Acontext 用的)</p>
+                  <p className="text-sm text-emerald-700 mb-3">流程: 边用边学</p>
+                  <div className="text-xs text-emerald-600 space-y-1">
+                    <p>1. 执行任务</p>
+                    <p>2. 成功/失败</p>
+                    <p>3. 提取技能 (在线)</p>
+                    <p>4. 动态技能库 (持续增长)</p>
+                  </div>
+                  <div className="mt-3 text-xs text-emerald-500 border-t border-emerald-200 pt-2">
+                    ✅ 技能库是动态增长的，每次成功都会积累
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">术语</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">说明</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">Acontext 符合吗？</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Online Learning</td><td className="px-4 py-3 text-sm text-zinc-500">边用边学</td><td className="px-4 py-3 text-sm text-green-600">✅ 是</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Incremental Learning</td><td className="px-4 py-3 text-sm text-zinc-500">增量学习，逐步积累</td><td className="px-4 py-3 text-sm text-green-600">✅ 是</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Continual Learning</td><td className="px-4 py-3 text-sm text-zinc-500">持续学习，不断适应</td><td className="px-4 py-3 text-sm text-green-600">✅ 是</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Lifelong Learning</td><td className="px-4 py-3 text-sm text-zinc-500">终身学习</td><td className="px-4 py-3 text-sm text-green-600">✅ 是</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Experience Replay</td><td className="px-4 py-3 text-sm text-zinc-500">经验回放，检索旧经验</td><td className="px-4 py-3 text-sm text-green-600">✅ 类似</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Q2: Acontext 的 Online Learning 流程 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q2: Acontext 的 Online Learning 流程是怎样的？</h3>
+
+              <div className="space-y-4">
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-2">第 1 轮</p>
+                  <p className="text-sm text-blue-600 mb-2">任务: "把苹果放进冰箱"</p>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>1. 检索技能库 → <span className="text-blue-500">空 (刚开始什么都没有)</span></li>
+                    <li>2. 从零开始执行</li>
+                    <li>3. 经过多次尝试，最终成功</li>
+                    <li>4. Acontext 自动提取技能</li>
+                    <li>5. 存入技能库 ✓</li>
+                  </ul>
+                  <p className="text-xs text-blue-500 mt-2">技能库: [把物品放进冰箱] (1 个技能)</p>
+                </div>
+
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-semibold text-green-800 mb-2">第 2 轮</p>
+                  <p className="text-sm text-green-600 mb-2">任务: "把牛奶放进冰箱"</p>
+                  <ul className="text-sm text-green-700 space-y-1">
+                    <li>1. 检索技能库 → <span className="text-green-500">找到 "把物品放进冰箱"</span></li>
+                    <li>2. 复用技能，快速执行</li>
+                    <li>3. 成功！</li>
+                  </ul>
+                  <p className="text-xs text-green-500 mt-2">技能库: [把物品放进冰箱] (1 个技能，复用 1 次)</p>
+                </div>
+
+                <div className="bg-violet-50 rounded-xl p-5">
+                  <p className="font-semibold text-violet-800 mb-2">第 3 轮</p>
+                  <p className="text-sm text-violet-600 mb-2">任务: "把书放在书架上"</p>
+                  <ul className="text-sm text-violet-700 space-y-1">
+                    <li>1. 检索技能库 → <span className="text-violet-500">没有完全匹配的</span></li>
+                    <li>2. 参考相似技能，尝试执行</li>
+                    <li>3. 成功！</li>
+                    <li>4. 提取新技能: "把物品放在架子上"</li>
+                    <li>5. 存入技能库 ✓</li>
+                  </ul>
+                  <p className="text-xs text-violet-500 mt-2">技能库: [把物品放进冰箱, 把物品放在架子上] (2 个技能)</p>
+                </div>
+
+                <div className="bg-amber-50 rounded-xl p-5">
+                  <p className="font-semibold text-amber-800 mb-2">第 N 轮...</p>
+                  <ul className="text-sm text-amber-700 space-y-1">
+                    <li>• 技能库: 持续增长，能力越来越强</li>
+                    <li>• 执行效率: 越来越高</li>
+                    <li>• 成功率: 越来越高</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Q3: SkillNet 和 Acontext 的核心区别 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q3: SkillNet 和 Acontext 的核心区别是什么？</h3>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">维度</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">SkillNet</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">Acontext</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">技能来源</td><td className="px-4 py-3 text-sm text-zinc-500">预先从专家轨迹提取</td><td className="px-4 py-3 text-sm text-emerald-600">运行时从成功轨迹提取</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">技能创建时机</td><td className="px-4 py-3 text-sm text-zinc-500">离线</td><td className="px-4 py-3 text-sm text-emerald-600">在线</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">技能库增长</td><td className="px-4 py-3 text-sm text-red-600">❌ 固定不变</td><td className="px-4 py-3 text-sm text-green-600">✅ 持续增长</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">从失败学习</td><td className="px-4 py-3 text-sm text-red-600">❌ 不能</td><td className="px-4 py-3 text-sm text-green-600">✅ 可以</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">自我进化</td><td className="px-4 py-3 text-sm text-red-600">❌ 不能</td><td className="px-4 py-3 text-sm text-green-600">✅ 可以</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">学习模式</td><td className="px-4 py-3 text-sm text-zinc-500">Offline Learning</td><td className="px-4 py-3 text-sm text-emerald-600">Online Learning</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-zinc-50 rounded-xl p-5">
+                  <p className="font-semibold text-zinc-800 mb-3">SkillNet 模式</p>
+                  <div className="text-xs text-zinc-600 font-mono space-y-1">
+                    <p>[专家轨迹] ──提取──▶ [技能库(固定37个)]</p>
+                    <p className="ml-16">│</p>
+                    <p className="ml-16">▼</p>
+                    <p>[新任务] ──检索──▶ [复用技能] ──执行──▶ [结果]</p>
+                  </div>
+                  <p className="text-xs text-zinc-500 mt-3">技能库永远只有 37 个，不会增长</p>
+                </div>
+                <div className="bg-emerald-50 rounded-xl p-5">
+                  <p className="font-semibold text-emerald-800 mb-3">Acontext 模式</p>
+                  <div className="text-xs text-emerald-600 font-mono space-y-1">
+                    <p className="ml-16">[技能库(动态增长)]</p>
+                    <p className="ml-12">▲             │</p>
+                    <p className="ml-8">│             ▼</p>
+                    <p>[提取新技能]    [检索技能]</p>
+                    <p className="ml-4">▲             │</p>
+                    <p className="ml-4">│             ▼</p>
+                    <p>[成功经验] ◀── [执行任务] ◀── [新任务]</p>
+                  </div>
+                  <p className="text-xs text-emerald-500 mt-3">技能库持续增长，越用越强</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Q4: 对 Benchmark 设计的影响 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q4: 这对 Benchmark 设计意味着什么？</h3>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-orange-50 rounded-xl p-5">
+                  <p className="font-semibold text-orange-800 mb-3">SkillNet 的 Benchmark (静态测试)</p>
+                  <p className="text-sm text-orange-600 mb-3">问题: 有预设技能比没有好吗？</p>
+                  <ul className="text-sm text-orange-700 space-y-1">
+                    <li>• 对比: 有技能库 vs 无技能库</li>
+                    <li>• 技能库: 预先固定的 37 个</li>
+                    <li>• 测量: 成功率、步数</li>
+                  </ul>
+                  <div className="mt-3 text-xs text-red-600 border-t border-orange-200 pt-2">
+                    局限: 不能测"学习能力"、"自我进化"、"技能增长"
+                  </div>
+                </div>
+                <div className="bg-emerald-50 rounded-xl p-5">
+                  <p className="font-semibold text-emerald-800 mb-3">Acontext 的 Benchmark (动态测试)</p>
+                  <p className="text-sm text-emerald-600 mb-3">问题: 能从经验中学习并持续进步吗？</p>
+                  <ul className="text-sm text-emerald-700 space-y-1">
+                    <li>• 对比: 有 Acontext vs 无 Acontext</li>
+                    <li>• 技能库: 从空开始，动态增长</li>
+                    <li>• 测量: 成功率、学习曲线、技能增长、记忆利用率、泛化能力</li>
+                  </ul>
+                  <div className="mt-3 text-xs text-green-600 border-t border-emerald-200 pt-2">
+                    优势: 能测"学习能力"、"自我进化"、"技能增长"
+                  </div>
+                </div>
+              </div>
+
+              {/* 预期学习曲线对比 */}
+              <div className="bg-zinc-900 rounded-xl p-6 text-white">
+                <p className="font-semibold mb-4">预期学习曲线对比</p>
+                <pre className="text-sm text-green-400 font-mono">
+{`成功率
+  │
+1.0├─────────────────────────────●●●●●● Acontext (Online Learning)
+   │                     ●●●●●●
+0.8├───────────────●●●●
+   │          ●●●●
+0.6├─────●●●●
+   │ ●●●
+0.4├─●─────────────────────────────────── Baseline (No Memory)
+   │●                                     SkillNet (Fixed Skills)
+0.2├
+   └─────────────────────────────────────▶ 轮次
+     1   2   3   4   5   6   7   8   9  10`}
+                </pre>
+                <ul className="text-xs text-zinc-400 mt-4 space-y-1">
+                  <li>• Baseline: 不随时间变化</li>
+                  <li>• SkillNet: 从第1轮就高，但不变</li>
+                  <li>• Acontext: 从低开始，持续上升，最终超过 SkillNet</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Q5: Acontext Benchmark 应该测什么 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q5: Acontext Benchmark 应该测什么？</h3>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-2">1. 学习能力</p>
+                  <p className="text-xs text-blue-600 mb-2">多轮后表现是否提升？</p>
+                  <p className="text-sm text-blue-700">后 N 轮成功率 - 前 N 轮成功率，目标 &gt; 20% 提升</p>
+                </div>
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-semibold text-green-800 mb-2">2. 技能增长</p>
+                  <p className="text-xs text-green-600 mb-2">技能库增长了多少？</p>
+                  <p className="text-sm text-green-700">最终技能数 - 初始技能数，目标 &gt; 0</p>
+                </div>
+                <div className="bg-amber-50 rounded-xl p-5">
+                  <p className="font-semibold text-amber-800 mb-2">3. 记忆利用率</p>
+                  <p className="text-xs text-amber-600 mb-2">复用了多少已存记忆？</p>
+                  <p className="text-sm text-amber-700">复用次数 / 总任务数，适度为佳</p>
+                </div>
+                <div className="bg-violet-50 rounded-xl p-5">
+                  <p className="font-semibold text-violet-800 mb-2">4. 泛化能力</p>
+                  <p className="text-xs text-violet-600 mb-2">在未见任务上表现如何？</p>
+                  <p className="text-sm text-violet-700">未见任务成功率，接近已见任务的成功率</p>
+                </div>
+                <div className="bg-rose-50 rounded-xl p-5">
+                  <p className="font-semibold text-rose-800 mb-2">5. 学习速度</p>
+                  <p className="text-xs text-rose-600 mb-2">多快能达到稳定水平？</p>
+                  <p className="text-sm text-rose-700">成功率达到 80% 需要的轮数，越少越好</p>
+                </div>
+              </div>
+
+              {/* 评估报告模板 */}
+              <div className="bg-zinc-50 rounded-xl p-5">
+                <p className="font-semibold text-zinc-800 mb-3">评估报告模板</p>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead className="bg-zinc-100">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">指标</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">Baseline</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">Acontext</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">提升</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-200">
+                      <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">平均成功率</td><td className="px-4 py-3 text-sm text-zinc-500">45%</td><td className="px-4 py-3 text-sm text-emerald-600">78%</td><td className="px-4 py-3 text-sm text-green-600">+33%</td></tr>
+                      <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">平均步数</td><td className="px-4 py-3 text-sm text-zinc-500">18.5</td><td className="px-4 py-3 text-sm text-emerald-600">11.2</td><td className="px-4 py-3 text-sm text-green-600">-7.3</td></tr>
+                      <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">第1轮成功率</td><td className="px-4 py-3 text-sm text-zinc-500">45%</td><td className="px-4 py-3 text-sm text-zinc-500">45%</td><td className="px-4 py-3 text-sm text-zinc-400">0%</td></tr>
+                      <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">第10轮成功率</td><td className="px-4 py-3 text-sm text-zinc-500">45%</td><td className="px-4 py-3 text-sm text-emerald-600">85%</td><td className="px-4 py-3 text-sm text-green-600">+40%</td></tr>
+                      <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">技能增长</td><td className="px-4 py-3 text-sm text-zinc-500">0</td><td className="px-4 py-3 text-sm text-emerald-600">23</td><td className="px-4 py-3 text-sm text-green-600">✅</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* Q6: 如何设计公平的对比实验 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q6: 如何设计一个公平的对比实验？</h3>
+
+              <div className="bg-blue-50 rounded-xl p-5 mb-6">
+                <p className="font-semibold text-blue-800 mb-3">控制变量 (必须一致)</p>
+                <div className="grid md:grid-cols-2 gap-4 text-sm text-blue-700">
+                  <ul className="space-y-1">
+                    <li>✅ 相同的 LLM (模型版本、参数)</li>
+                    <li>✅ 相同的环境</li>
+                    <li>✅ 相同的任务集</li>
+                    <li>✅ 相同的 Agent 代码框架</li>
+                  </ul>
+                  <ul className="space-y-1">
+                    <li>✅ 相同的系统提示词 (System Prompt)</li>
+                    <li>✅ 相同的最大步数</li>
+                    <li>✅ 相同的随机种子</li>
+                    <li>✅ 相同的评估指标</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-5 mb-6">
+                <p className="font-semibold text-amber-800 mb-2">唯一变量</p>
+                <p className="text-sm text-amber-700">是否使用 Acontext (Memory/Skill 系统)</p>
+              </div>
+
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+                  <span className="text-zinc-400 text-sm">代码结构对比</span>
+                </div>
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`# 两个 Agent 用相同的代码框架，只有 Memory 部分不同
+
+class BaselineAgent:
+    """对照组: 无 Memory"""
+    def act(self, observation, task):
+        # 直接推理，不检索记忆
+        response = self.llm.generate([
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": f"任务: {task}\\n观察: {observation}"}
+        ])
+        return self.parse_action(response)
+
+class AcontextAgent:
+    """实验组: 有 Memory"""
+    def act(self, observation, task):
+        # 1. 检索相关记忆
+        memories = self.acontext.retrieve(task)
+
+        # 2. 构建带记忆的 prompt
+        context = f"相关经验:\\n{memories}\\n\\n" if memories else ""
+        response = self.llm.generate([
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": f"{context}任务: {task}\\n观察: {observation}"}
+        ])
+
+        return self.parse_action(response)
+
+    def run_episode(self, env, task):
+        # ... 执行任务 ...
+        if success:
+            # 只有实验组存储
+            self.acontext.store(task, trajectory)`}</code>
+                </pre>
+              </div>
+            </div>
+
+            {/* Q7: Acontext 的核心价值 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q7: Acontext 的核心价值</h3>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-2">1. Online Learning</p>
+                  <p className="text-sm text-blue-600">边用边学，不需要预先准备，从零开始也能学会</p>
+                </div>
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5">
+                  <p className="font-semibold text-green-800 mb-2">2. 持续进化</p>
+                  <p className="text-sm text-green-600">越用越强，技能库持续增长，能力不断提升</p>
+                </div>
+                <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-xl p-5">
+                  <p className="font-semibold text-violet-800 mb-2">3. 自适应</p>
+                  <p className="text-sm text-violet-600">能处理新任务，遇到新任务时学习，下次就能复用</p>
+                </div>
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-5">
+                  <p className="font-semibold text-amber-800 mb-2">4. 经验积累</p>
+                  <p className="text-sm text-amber-600">不遗忘，所有成功经验都被保存，不会丢失</p>
+                </div>
+                <div className="bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-5">
+                  <p className="font-semibold text-rose-800 mb-2">5. 可迁移</p>
+                  <p className="text-sm text-rose-600">技能可复用，学到的技能可以在相似任务中复用</p>
+                </div>
+              </div>
+
+              <div className="bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl p-5">
+                <p className="font-medium text-emerald-800 mb-2">Benchmark 要证明的:</p>
+                <ul className="text-sm text-emerald-700 space-y-1">
+                  <li>✅ 有 Acontext 的 Agent 能从经验中学习</li>
+                  <li>✅ 多轮后表现显著提升</li>
+                  <li>✅ 技能库会持续增长</li>
+                  <li>✅ 能泛化到新任务</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Q8: 为什么 SkillNet 用正则解析 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q8: 为什么 SkillNet 不用 Function Calling，而是用正则解析？</h3>
+
+              <div className="bg-zinc-900 rounded-xl overflow-hidden mb-6">
+                <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+                  <span className="text-zinc-400 text-sm">SkillNet 的方式</span>
+                </div>
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`# 1. System Prompt 定义输出格式
+alfworld_system_prompt = """
+Your response should use the following format:
+
+Thought: <your thoughts>
+Action: <your next action>
+"""
+
+# 2. LLM 输出纯文本
+response = llm(messages)
+# "Thought: 我需要找到苹果
+#  Action: go to kitchen"
+
+# 3. 正则解析
+pattern = re.compile(r"Action:\\s*(.+)", re.IGNORECASE)
+action = pattern.search(response).group(1).strip()
+# "go to kitchen"`}</code>
+                </pre>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-2">原因 1: 兼容性 (最重要)</p>
+                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                    <div className="text-blue-700">
+                      <p className="font-medium mb-1">Function Calling 支持情况:</p>
+                      <ul className="space-y-1 text-xs">
+                        <li>✅ OpenAI GPT-4/GPT-3.5 - 原生支持</li>
+                        <li>⚠️ Anthropic Claude - 支持 Tool Use (但格式不同)</li>
+                        <li>❌ 很多开源模型 - 不支持</li>
+                        <li>⚠️ DeepSeek/Gemini - 各有各的格式</li>
+                      </ul>
+                    </div>
+                    <div className="text-blue-600">
+                      <p className="font-medium mb-1">纯文本方式:</p>
+                      <p className="text-xs">✅ 所有 LLM 都支持 - 只要能输出文字就行</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-amber-50 rounded-xl p-5">
+                  <p className="font-semibold text-amber-800 mb-2">原因 2: ReAct 论文的传统</p>
+                  <p className="text-sm text-amber-700">ReAct (2022) 原始论文就是用 Thought/Action 格式，学术界做 Agent 研究大多沿用这个格式</p>
+                </div>
+
+                <div className="bg-violet-50 rounded-xl p-5">
+                  <p className="font-semibold text-violet-800 mb-2">原因 3: 思考过程需要完整输出</p>
+                  <p className="text-sm text-violet-700 mb-2">ReAct 的核心是 "边想边做"</p>
+                  <p className="text-xs text-violet-600">如果用 Function Calling → 只有 tool_calls，没有 Thought → 丢失了推理过程 → 无法分析 Agent 的思考逻辑</p>
+                </div>
+
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-semibold text-green-800 mb-2">原因 4: 简单</p>
+                  <div className="grid md:grid-cols-2 gap-4 text-xs">
+                    <div className="text-green-700">
+                      <p className="font-medium mb-1">Function Calling:</p>
+                      <code className="bg-green-100 px-2 py-1 rounded">tools = [{"type": "function", "function": {...}}]</code>
+                    </div>
+                    <div className="text-green-600">
+                      <p className="font-medium mb-1">纯文本:</p>
+                      <code className="bg-green-100 px-2 py-1 rounded">SYSTEM_PROMPT = "输出格式: Thought: ... Action: ..."</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">特性</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">纯文本 + 正则</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">Function Calling</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">LLM 调用</td><td className="px-4 py-3 text-sm text-zinc-500">messages only</td><td className="px-4 py-3 text-sm text-zinc-500">messages + tools</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">输出格式</td><td className="px-4 py-3 text-sm text-zinc-500">纯文本</td><td className="px-4 py-3 text-sm text-zinc-500">结构化 JSON</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">可靠性</td><td className="px-4 py-3 text-sm text-zinc-500">依赖 LLM 输出格式</td><td className="px-4 py-3 text-sm text-zinc-500">强类型保证</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">兼容性</td><td className="px-4 py-3 text-sm text-green-600">✅ 所有 LLM</td><td className="px-4 py-3 text-sm text-yellow-600">⚠️ 仅部分模型支持</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">思考过程</td><td className="px-4 py-3 text-sm text-green-600">✅ 保留</td><td className="px-4 py-3 text-sm text-red-600">❌ 丢失</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">代码量</td><td className="px-4 py-3 text-sm text-green-600">少</td><td className="px-4 py-3 text-sm text-yellow-600">多</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-5">
+                <p className="font-medium text-amber-800 mb-2">Acontext Benchmark 的选择建议</p>
+                <ul className="text-sm text-amber-700 space-y-1">
+                  <li>• 只测试 OpenAI 模型 → Function Calling (更稳定)</li>
+                  <li>• 要测试多个模型 → <strong>纯文本 + 正则</strong> (更通用) ← 推荐</li>
+                  <li>• 要和 SkillNet 论文对比 → <strong>纯文本 + 正则</strong> (保证公平)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* 参考资料 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">参考资料</h3>
+              <div className="bg-zinc-50 rounded-xl p-5">
+                <ul className="text-sm text-zinc-600 space-y-2">
+                  <li>• <a href="https://en.wikipedia.org/wiki/Online_machine_learning" className="text-blue-600 hover:underline" target="_blank" rel="noopener">Online Learning 维基百科</a></li>
+                  <li>• <a href="https://arxiv.org/abs/1904.07734" className="text-blue-600 hover:underline" target="_blank" rel="noopener">Continual Learning 综述</a></li>
+                  <li>• <a href="https://arxiv.org/abs/2007.04218" className="text-blue-600 hover:underline" target="_blank" rel="noopener">Incremental Learning 综述</a></li>
+                </ul>
               </div>
             </div>
 
