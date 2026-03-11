@@ -140,9 +140,9 @@ openclaw gateway restart`}</code></pre>
       </section>
 
       <section>
-        <h2>多 Gateway 配置问题</h2>
+        <h2>多 Gateway 配置：Workspace 路径跑偏</h2>
 
-        <h3>症状：Workspace 路径混乱</h3>
+        <h3>症状</h3>
         <div className="bg-amber-50 dark:bg-amber-950 border-l-4 border-amber-500 p-4 my-4">
           <p className="text-amber-700 dark:text-amber-300 mb-0">
             配置在 <code>~/.openclaw-rescue/</code>，但 workspace 却在 <code>~/.openclaw/workspace-rescue</code>
@@ -150,38 +150,31 @@ openclaw gateway restart`}</code></pre>
         </div>
 
         <h3>原因</h3>
-        <p><code>openclaw.json</code> 中的 <code>agents.defaults.workspace</code> 被手动指定到了错误的路径。</p>
+        <p>
+          <code>onboard</code> 创建 profile 时会自动加 <code>-rescue</code> 后缀，但 workspace 路径默认放在 <code>~/.openclaw/</code> 下，
+          而不是 <code>~/.openclaw-rescue/</code> 里——这是文档没说清楚的一个坑。没有专门的命令，只能手动改 json。
+        </p>
 
         <h3>解决方法</h3>
-        <pre><code>{`# 1. 创建新 workspace 目录
-mkdir -p ~/.openclaw-rescue/workspace
+        <pre><code>{`# 1. 找配置文件，确认当前 workspace 路径
+cat ~/.openclaw-rescue/openclaw.json | grep workspace
 
-# 2. 迁移现有文件（如果有）
-cp -r ~/.openclaw/workspace-rescue/* ~/.openclaw-rescue/workspace/
+# 2. 迁移现有文件（别丢数据）
+cp -r ~/.openclaw/workspace-rescue ~/.openclaw-rescue/workspace
 
-# 3. 修改配置文件
+# 3. 改 workspace 路径
 nano ~/.openclaw-rescue/openclaw.json
-# 把 workspace 改成:
-# "workspace": "/home/your-user/.openclaw-rescue/workspace"
+# 找到这行：
+#   "workspace": "/home/ec2-user/.openclaw/workspace-rescue"
+# 改成：
+#   "workspace": "/home/ec2-user/.openclaw-rescue/workspace"
 
-# 4. 重启 gateway
-OPENCLAW_HOME=~/.openclaw-rescue openclaw gateway restart`}</code></pre>
-
-        <h3>正确的目录结构</h3>
-        <pre><code>{`~/.openclaw-rescue/
-├── openclaw.json          # 主配置
-├── agents/                # Agent 数据
-├── extensions/            # 扩展插件
-├── memory/                # 记忆数据库
-├── workspace/             # 工作区（应该在 rescue 目录下）
-│   ├── SOUL.md
-│   ├── MEMORY.md
-│   └── memory/            # 日记
-└── logs/`}</code></pre>
+# 4. 重启
+openclaw --profile rescue gateway restart`}</code></pre>
 
         <div className="bg-blue-50 dark:bg-blue-950 border-l-4 border-blue-500 p-4 my-4">
           <p className="text-blue-700 dark:text-blue-300 mb-0">
-            <strong>最佳实践：</strong>每个 profile 的所有文件（配置、workspace、日志）都应该在同一个目录下，便于隔离和管理。
+            <strong>提示：</strong>如果不是 rescue profile，先运行 <code>openclaw status</code> 看 Sessions 那行显示的是哪个 json 文件。
           </p>
         </div>
       </section>
