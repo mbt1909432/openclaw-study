@@ -45,6 +45,7 @@ const docSections = [
     color: 'emerald',
     items: [
       { href: '/docs/skills', title: '技能安装与使用', desc: 'ClawHub、baoyu-skills、API Key 配置' },
+      { href: '/docs/benchmark', title: 'Benchmark 研究', desc: 'ALFWorld、LongMemEval、SkillNet' },
     ]
   },
   {
