@@ -34,7 +34,9 @@ const docSections = [
       { href: '/docs/architecture', title: '整体架构', desc: 'Gateway-Node-Channel 三层架构' },
       { href: '/docs/components', title: '组件介绍', desc: 'Gateway、Agent、Channels、Tools、Memory、Skills' },
       { href: '/docs/memory', title: '记忆系统', desc: '四层架构、向量搜索、Pre-Compaction' },
-      { href: '/docs/workspace', title: '目录结构', desc: 'Gateway 目录、工作区、多 Profile' },
+      { href: '/docs/workspace', title: 'Agent 工作区', desc: '目录结构、核心文件、技能加载' },
+      { href: '/docs/bootstrap', title: 'BOOTSTRAP 引导', desc: '首次运行引导脚本' },
+      { href: '/docs/sessions', title: 'Session 与设计哲学', desc: '用户识别、会话隔离、Unix 哲学' },
     ]
   },
   {

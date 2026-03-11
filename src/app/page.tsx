@@ -212,6 +212,20 @@ export default function Home() {
               <h4 className="font-semibold text-slate-800 mb-1">记忆系统</h4>
               <p className="text-slate-400 text-sm">四层架构、向量搜索</p>
             </Link>
+            <Link href="/docs/workspace" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+              <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-100 transition-colors">
+                  <span>📁</span>
+              </div>
+              <h4 className="font-semibold text-slate-800 mb-1">Agent 工作区</h4>
+              <p className="text-slate-400 text-sm">目录结构、核心文件</p>
+            </Link>
+            <Link href="/docs/sessions" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
+              <div className="w-8 h-8 bg-rose-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-rose-100 transition-colors">
+                  <span>🔐</span>
+              </div>
+              <h4 className="font-semibold text-slate-800 mb-1">Session 与认证</h4>
+              <p className="text-slate-400 text-sm">用户识别、设计哲学</p>
+            </Link>
             <Link href="/docs/feishu" className="group p-5 bg-white rounded-xl border border-slate-100 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-100 transition-all">
               <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-cyan-100 transition-colors">
                   <span>💬</span>

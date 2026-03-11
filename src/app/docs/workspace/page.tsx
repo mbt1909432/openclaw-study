@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '目录结构 - OpenClaw 文档',
-  description: 'OpenClaw 完整目录结构说明',
+  title: 'Agent 工作区 - OpenClaw 文档',
+  description: 'OpenClaw Agent 工作区详解 - 一切皆文本的哲学核心',
 }
 
 export default function WorkspacePage() {
@@ -14,85 +14,48 @@ export default function WorkspacePage() {
           <span>/</span>
           <a href="/docs" className="hover:text-zinc-900">文档</a>
           <span>/</span>
-          <span className="text-zinc-900">目录结构</span>
+          <span className="text-zinc-900">Agent 工作区</span>
         </nav>
 
         <header className="pb-8 border-b border-zinc-100 mb-10">
-          <h1 className="text-4xl font-bold text-zinc-900 tracking-tight mb-4">目录结构</h1>
-          <p className="text-lg text-zinc-500">了解 OpenClaw 的文件组织方式</p>
+          <h1 className="text-4xl font-bold text-zinc-900 tracking-tight mb-4">Agent 工作区</h1>
+          <p className="text-lg text-zinc-500">
+            每个 Agent 在文件系统中有一个独立的工作区目录
+          </p>
+          <p className="text-zinc-600 mt-3">
+            所有配置、记忆、技能都以纯文本文件的形式存在。这是 OpenClaw <strong>"一切皆文本"</strong> 哲学的核心体现。
+          </p>
         </header>
 
-        {/* Gateway 目录 */}
+        {/* 目录结构 */}
         <section className="mb-14">
-          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">Gateway 数据目录</h2>
-          <p className="text-zinc-600 mb-4">主配置和状态数据存放在 <code className="px-1.5 py-0.5 bg-zinc-100 rounded text-sm">~/.openclaw/</code>：</p>
-
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">目录结构</h2>
           <div className="bg-zinc-900 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+              <span className="text-zinc-400 text-sm">workspace/</span>
+            </div>
             <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
-              <code>{`~/.openclaw/
-├── openclaw.json          # 主配置文件
-├── .env                   # 环境变量
-│
-├── identity/
-│   ├── device.json        # 设备身份标识
-│   └── device-auth.json   # 设备认证 token
-│
-├── credentials/           # 渠道认证凭据
-│
-├── agents/
-│   └── main/              # agent 运行状态
-│
-├── workspace/             # Agent 工作区
-│
-├── skills/                # 用户级自定义技能
-│
-├── memory/
-│   └── main.sqlite        # 消息历史数据库
-│
-├── cron/
-│   └── jobs.json          # 定时任务配置
-│
-├── devices/
-│   ├── paired.json        # 已配对的设备
-│   └── pending.json       # 等待配对的设备
-│
-├── canvas/
-│   └── index.html         # Web Canvas 页面
-│
-└── logs/                  # 审计日志`}</code>
+              <code>{`workspace/
+├── AGENTS.md           # Agent 定义（身份、行为规则）
+├── SOUL.md             # 灵魂/人格指令（不可变内核）
+├── USER.md             # 用户信息与偏好
+├── MEMORY.md           # 长期记忆存储
+├── HEARTBEAT.md        # 心跳配置（定时任务）
+├── TOOLS.md            # 工具定义
+├── IDENTITY.md         # 身份标识
+├── BOOTSTRAP.md        # 引导配置
+├── memory/             # 日志目录
+│   └── YYYY-MM-DD.md   # 每日 append-only 日志
+├── skills/             # 本地技能目录（优先级最高）
+└── sessions.json       # 会话存储`}</code>
             </pre>
           </div>
         </section>
 
-        {/* Agent 工作区 */}
+        {/* 核心文件说明 */}
         <section className="mb-14">
-          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">Agent 工作区</h2>
-          <p className="text-zinc-600 mb-4">每个 Agent 都有独立的工作区（workspace），这是它的"家"：</p>
-
-          <div className="bg-zinc-900 rounded-xl overflow-hidden mb-6">
-            <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
-              <code>{`workspace/
-├── .git/                  # git 版本控制（自动提交）
-├── .openclaw/             # workspace 级配置
-│
-├── AGENTS.md              # Agent 行为规范
-├── SOUL.md                # 人格定义
-├── IDENTITY.md            # 名字、形象、emoji
-├── USER.md                # 用户信息
-├── TOOLS.md               # 本地工具备注
-├── HEARTBEAT.md           # 心跳检查清单
-│
-├── MEMORY.md              # 长期记忆
-│
-└── memory/
-    ├── YYYY-MM-DD.md      # 每日原始日志
-    └── heartbeat-state.json`}</code>
-            </pre>
-          </div>
-
-          <h3 className="text-lg font-medium text-zinc-800 mb-4">引导文件说明</h3>
-
-          <div className="border border-zinc-200 rounded-xl overflow-hidden">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">核心文件说明</h2>
+          <div className="border border-zinc-200 rounded-xl overflow-hidden mb-6">
             <table className="w-full text-sm">
               <thead className="bg-zinc-50">
                 <tr>
@@ -102,99 +65,125 @@ export default function WorkspacePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
-                {[
-                  ['AGENTS.md', '操作规则、优先级', '每次对话'],
-                  ['SOUL.md', '人格、语气、边界', '每次对话'],
-                  ['USER.md', '用户是谁、怎么称呼', '每次对话'],
-                  ['IDENTITY.md', '机器人名称、风格', '每次对话'],
-                  ['MEMORY.md', '长期记忆', '主会话'],
-                  ['HEARTBEAT.md', '心跳检查清单', '心跳任务'],
-                  ['BOOTSTRAP.md', '首次运行仪式', '仅首次'],
-                ].map(([file, usage, timing]) => (
-                  <tr key={file}>
-                    <td className="px-4 py-3 font-mono text-violet-600 text-xs">{file}</td>
-                    <td className="px-4 py-3 text-zinc-600">{usage}</td>
-                    <td className="px-4 py-3 text-zinc-500 text-xs">{timing}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* 多 Profile */}
-        <section className="mb-14">
-          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">多 Profile 说明</h2>
-          <p className="text-zinc-600 mb-4">使用 <code className="px-1.5 py-0.5 bg-zinc-100 rounded text-sm">--profile</code> 参数创建独立配置：</p>
-
-          <div className="border border-zinc-200 rounded-xl overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-zinc-50">
                 <tr>
-                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">Profile</th>
-                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">数据目录</th>
-                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">工作区</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100">
-                <tr>
-                  <td className="px-4 py-3 font-medium text-zinc-800">默认</td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-600">~/.openclaw/</td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-600">~/.openclaw/workspace/</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">AGENTS.md</td>
+                  <td className="px-4 py-3 text-zinc-600">Agent 身份定义、行为边界、回复风格</td>
+                  <td className="px-4 py-3 text-zinc-500">每次 Session 启动时</td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-3 font-medium text-zinc-800">rescue</td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-600">~/.openclaw-rescue/</td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-600">~/.openclaw/workspace-rescue/</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">SOUL.md</td>
+                  <td className="px-4 py-3 text-zinc-600">不可变的人格内核，定义 Agent「是谁」</td>
+                  <td className="px-4 py-3 text-zinc-500">每次 Session 启动时</td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-3 font-medium text-zinc-800">coding</td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-600">~/.openclaw/</td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-600">~/.openclaw/workspace-coding/</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">USER.md</td>
+                  <td className="px-4 py-3 text-zinc-600">关于用户的结构化信息：称呼、偏好、关系</td>
+                  <td className="px-4 py-3 text-zinc-500">Main session 启动时</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">MEMORY.md</td>
+                  <td className="px-4 py-3 text-zinc-600">长期记忆，Agent 主动写入的持久化事实</td>
+                  <td className="px-4 py-3 text-zinc-500">仅 main session</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">HEARTBEAT.md</td>
+                  <td className="px-4 py-3 text-zinc-600">定时任务和主动行为配置</td>
+                  <td className="px-4 py-3 text-zinc-500">Gateway 启动时</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">TOOLS.md</td>
+                  <td className="px-4 py-3 text-zinc-600">工具定义和配置</td>
+                  <td className="px-4 py-3 text-zinc-500">每次 Session 启动时</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">skills/</td>
+                  <td className="px-4 py-3 text-zinc-600">工作区级技能，优先级最高</td>
+                  <td className="px-4 py-3 text-zinc-500">Session 启动时扫描</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        {/* 编辑文件 */}
+        {/* 会话类型过滤 */}
         <section className="mb-14">
-          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">如何编辑工作区文件</h2>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-5 border border-zinc-200 rounded-xl">
-              <h3 className="font-medium text-zinc-800 mb-3 flex items-center gap-2">
-                <span className="text-lg">🌐</span>
-                方法一：Web 面板
-              </h3>
-              <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-600">
-                <li>打开 http://127.0.0.1:18789/</li>
-                <li>点击「Agent」板块</li>
-                <li>选择要编辑的文件</li>
-                <li>修改后保存</li>
-              </ol>
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">会话类型过滤</h2>
+          <p className="text-zinc-600 mb-4">根据会话类型，加载的文件会有所不同：</p>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="border border-emerald-200 bg-emerald-50 rounded-xl p-5">
+              <h4 className="font-semibold text-emerald-800 mb-2">Main Session</h4>
+              <p className="text-sm text-emerald-700">加载全部文件：AGENTS.md、SOUL.md、USER.md、MEMORY.md、TOOLS.md 等</p>
             </div>
-            <div className="p-5 border border-zinc-200 rounded-xl">
-              <h3 className="font-medium text-zinc-800 mb-3 flex items-center gap-2">
-                <span className="text-lg">📝</span>
-                方法二：直接编辑
-              </h3>
-              <div className="bg-zinc-900 rounded-lg p-3 text-sm font-mono text-zinc-300">
-                <code>{`nano ~/.openclaw/workspace/SOUL.md
-nano ~/.openclaw/workspace/USER.md`}</code>
-              </div>
+            <div className="border border-amber-200 bg-amber-50 rounded-xl p-5">
+              <h4 className="font-semibold text-amber-800 mb-2">Subagent / Cron</h4>
+              <p className="text-sm text-amber-700">只加载核心文件：AGENTS.md、TOOLS.md、SOUL.md、IDENTITY.md、USER.md</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills 技能加载 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">Skills 技能加载</h2>
+          <h3 className="text-lg font-semibold text-zinc-800 mb-4">技能目录优先级（从低到高）</h3>
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center gap-3 p-3 bg-zinc-50 rounded-lg">
+              <span className="w-6 h-6 bg-zinc-200 rounded-full flex items-center justify-center text-zinc-600 text-xs font-bold">1</span>
+              <span className="text-sm text-zinc-700">extraDirs - 通过配置指定的额外目录</span>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-zinc-100 rounded-lg">
+              <span className="w-6 h-6 bg-zinc-300 rounded-full flex items-center justify-center text-zinc-600 text-xs font-bold">2</span>
+              <span className="text-sm text-zinc-700">bundledSkills - OpenClaw 内置技能</span>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+              <span className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-xs font-bold">3</span>
+              <span className="text-sm text-zinc-700">managedSkills - 管理的技能目录 (~/.openclaw/skills)</span>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-violet-50 rounded-lg">
+              <span className="w-6 h-6 bg-violet-100 rounded-full flex items-center justify-center text-violet-600 text-xs font-bold">4</span>
+              <span className="text-sm text-zinc-700">personalAgentsSkills - ~/.agents/skills 个人技能</span>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
+              <span className="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold">5</span>
+              <span className="text-sm text-zinc-700">projectAgentsSkills - 工作区内的 .agents/skills</span>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border-2 border-amber-300">
+              <span className="w-6 h-6 bg-amber-200 rounded-full flex items-center justify-center text-amber-700 text-xs font-bold">6</span>
+              <span className="text-sm text-zinc-700 font-medium">workspaceSkills - 工作区内的 skills/ 目录（最高优先级）</span>
+            </div>
+          </div>
+          <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-5">
+            <p className="font-medium text-amber-800 mb-2">优先级规则</p>
+            <p className="text-sm text-amber-700">低优先级先加载，高优先级后加载覆盖。工作区内的 skills/ 目录拥有最高优先级。</p>
+          </div>
+        </section>
+
+        {/* 设计原则 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">设计原则</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-violet-50 rounded-xl border border-violet-100">
+              <h3 className="font-semibold text-violet-800 mb-1">一切皆文本</h3>
+              <p className="text-sm text-violet-600">所有配置文件都是纯 Markdown 或 JSON，可直接用文本编辑器修改</p>
+            </div>
+            <div className="p-5 bg-blue-50 rounded-xl border border-blue-100">
+              <h3 className="font-semibold text-blue-800 mb-1">边界安全</h3>
+              <p className="text-sm text-blue-600">使用 boundary-safe 机制确保文件访问安全</p>
+            </div>
+            <div className="p-5 bg-emerald-50 rounded-xl border border-emerald-100">
+              <h3 className="font-semibold text-emerald-800 mb-1">多级缓存</h3>
+              <p className="text-sm text-emerald-600">文件内容缓存和会话缓存提升性能</p>
+            </div>
+            <div className="p-5 bg-amber-50 rounded-xl border border-amber-100">
+              <h3 className="font-semibold text-amber-800 mb-1">优先级系统</h3>
+              <p className="text-sm text-amber-600">技能和配置文件都有明确的加载优先级</p>
             </div>
           </div>
         </section>
 
         <footer className="pt-8 border-t border-zinc-100">
           <div className="flex justify-between items-center">
-            <a href="/docs/components" className="text-zinc-500 hover:text-zinc-900 transition-colors">
-              ← 组件介绍
-            </a>
-            <a href="/docs/skills" className="text-zinc-500 hover:text-zinc-900 transition-colors">
-              技能安装 →
-            </a>
+            <a href="/docs/memory" className="text-zinc-500 hover:text-zinc-900 transition-colors">← 记忆系统</a>
+            <a href="/docs/skills" className="text-zinc-500 hover:text-zinc-900 transition-colors">技能安装 →</a>
           </div>
         </footer>
       </div>
