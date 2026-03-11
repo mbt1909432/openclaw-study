@@ -127,6 +127,51 @@ openclaw onboard
 openclaw gateway restart
 ```
 
+## 多 Gateway 配置问题
+
+### 症状：Workspace 路径混乱
+
+配置在 `~/.openclaw-rescue/`，但 workspace 却在 `~/.openclaw/workspace-rescue`
+
+### 原因
+
+`openclaw.json` 中的 `agents.defaults.workspace` 被手动指定到了错误的路径。
+
+### 解决方法
+
+```
+# 1. 创建新 workspace 目录
+mkdir -p ~/.openclaw-rescue/workspace
+
+# 2. 迁移现有文件（如果有）
+cp -r ~/.openclaw/workspace-rescue/* ~/.openclaw-rescue/workspace/
+
+# 3. 修改配置文件
+nano ~/.openclaw-rescue/openclaw.json
+# 把 workspace 改成:
+# "workspace": "/home/your-user/.openclaw-rescue/workspace"
+
+# 4. 重启 gateway
+OPENCLAW_HOME=~/.openclaw-rescue openclaw gateway restart
+```
+
+### 正确的目录结构
+
+```
+~/.openclaw-rescue/
+├── openclaw.json          # 主配置
+├── agents/                # Agent 数据
+├── extensions/            # 扩展插件
+├── memory/                # 记忆数据库
+├── workspace/             # 工作区（应该在 rescue 目录下）
+│   ├── SOUL.md
+│   ├── MEMORY.md
+│   └── memory/            # 日记
+└── logs/
+```
+
+**最佳实践：**每个 profile 的所有文件（配置、workspace、日志）都应该在同一个目录下，便于隔离和管理。
+
 ## 插件重复警告
 
 ### 症状
