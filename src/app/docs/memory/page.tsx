@@ -1,0 +1,478 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '记忆系统 - OpenClaw 文档',
+  description: 'OpenClaw 记忆系统详解 - 四层架构、向量搜索、Pre-Compaction 机制',
+}
+
+export default function MemoryPage() {
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-8 py-12">
+        <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
+          <a href="/" className="hover:text-zinc-900">首页</a>
+          <span>/</span>
+          <a href="/docs" className="hover:text-zinc-900">文档</a>
+          <span>/</span>
+          <span className="text-zinc-900">记忆系统</span>
+        </nav>
+
+        <header className="pb-8 border-b border-zinc-100 mb-10">
+          <h1 className="text-4xl font-bold text-zinc-900 tracking-tight mb-4">记忆系统</h1>
+          <p className="text-lg text-zinc-500">
+            记忆是 OpenClaw 区别于普通 Chatbot 的核心能力
+          </p>
+          <p className="text-zinc-600 mt-3">
+            通过文件系统实现跨会话持久化，结合向量搜索和智能压缩，构建完整的上下文连续性。
+          </p>
+        </header>
+
+        {/* 核心设计原则 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">核心设计原则</h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 bg-violet-50 rounded-xl border border-violet-100">
+              <div className="text-2xl mb-2">📄</div>
+              <h3 className="font-semibold text-violet-800 mb-1">纯文本存储</h3>
+              <p className="text-sm text-violet-600">所有记忆都是 Markdown 文件，源文件即真相</p>
+            </div>
+            <div className="p-5 bg-blue-50 rounded-xl border border-blue-100">
+              <div className="text-2xl mb-2">📊</div>
+              <h3 className="font-semibold text-blue-800 mb-1">分层持久化</h3>
+              <p className="text-sm text-blue-600">从不可变身份到实时对话，四层架构</p>
+            </div>
+            <div className="p-5 bg-emerald-50 rounded-xl border border-emerald-100">
+              <div className="text-2xl mb-2">🔍</div>
+              <h3 className="font-semibold text-emerald-800 mb-1">智能索引</h3>
+              <p className="text-sm text-emerald-600">向量 + 关键词混合搜索，支持语义回忆</p>
+            </div>
+            <div className="p-5 bg-amber-50 rounded-xl border border-amber-100">
+              <div className="text-2xl mb-2">🛡️</div>
+              <h3 className="font-semibold text-amber-800 mb-1">自动保护</h3>
+              <p className="text-sm text-amber-600">Pre-Compaction 机制防止记忆丢失</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 四层记忆架构 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">四层记忆架构</h2>
+
+          <div className="border border-zinc-200 rounded-xl overflow-hidden mb-6">
+            <table className="w-full text-sm">
+              <thead className="bg-zinc-50">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">层级</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">文件</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">生命周期</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">说明</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100">
+                <tr>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-rose-100 text-rose-700 rounded font-mono text-xs">SOUL</span></td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">SOUL.md</td>
+                  <td className="px-4 py-3 text-zinc-600">永久不可变</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">身份、价值观、核心定义</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-blue-100 text-blue-700 rounded font-mono text-xs">USER</span></td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">MEMORY.md</td>
+                  <td className="px-4 py-3 text-zinc-600">持久化</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">用户偏好、决策、长期事实</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded font-mono text-xs">DAILY</span></td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">memory/YYYY-MM-DD.md</td>
+                  <td className="px-4 py-3 text-zinc-600">按日存储</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">每日交互记录，append-only</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3"><span className="px-2 py-1 bg-amber-100 text-amber-700 rounded font-mono text-xs">SESSION</span></td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">sessions.json</td>
+                  <td className="px-4 py-3 text-zinc-600">会话级</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">当前对话的实时上下文</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* 文件结构 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">文件结构</h2>
+
+          <div className="bg-zinc-900 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+              <span className="text-zinc-400 text-sm">workspace/</span>
+            </div>
+            <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+              <code>{`workspace/
+├── SOUL.md                    # 身份定义（不可变）
+├── MEMORY.md                  # 长期记忆（可编辑）
+├── AGENTS.md                  # Agent 行为指令
+├── memory/                    # 日志目录
+│   ├── 2026-03-10.md         # 每日日志
+│   ├── 2026-03-11.md         # 每日日志
+│   └── topics/               # 可选：主题记忆
+│       └── project-alpha.md
+└── .openclaw/
+    └── agents/<agentId>/
+        └── sessions/
+            ├── sessions.json  # 会话索引
+            └── <sessionId>.jsonl  # 会话转录`}</code>
+            </pre>
+          </div>
+        </section>
+
+        {/* 存储层详解 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">存储层详解</h2>
+
+          <div className="space-y-6">
+            {/* SOUL.md */}
+            <div className="border border-zinc-200 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="px-2 py-1 bg-rose-100 text-rose-700 rounded font-mono text-xs">SOUL</span>
+                <h3 className="text-lg font-semibold text-zinc-800">SOUL.md — 身份内核</h3>
+              </div>
+              <p className="text-zinc-600 mb-4 text-sm">创建后不应被修改，定义 Agent 的本质。</p>
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`# Agent Identity
+
+## Core Values
+- Helpful, harmless, honest
+- Respect user privacy
+- Maintain context continuity
+
+## Personality
+- Professional but approachable
+- Proactive in anticipating needs
+- Clear communication style`}</code>
+                </pre>
+              </div>
+            </div>
+
+            {/* MEMORY.md */}
+            <div className="border border-zinc-200 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded font-mono text-xs">USER</span>
+                <h3 className="text-lg font-semibold text-zinc-800">MEMORY.md — 长期记忆</h3>
+              </div>
+              <p className="text-zinc-600 mb-4 text-sm">持久化存储，支持语义搜索，人类可直接编辑。</p>
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`# Long-term Memory
+
+## User Preferences
+- Preferred language: Chinese
+- Code style: TypeScript, strict mode
+- Editor: VS Code with Vim keybindings
+
+## Key Decisions
+- 2026-03-01: Decided to use SQLite for local storage
+- 2026-03-05: Adopted monorepo structure`}</code>
+                </pre>
+              </div>
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-700">
+                  <strong>重要规则：</strong>只在 main/private session 中加载（群组隔离），Agent 可主动写入，格式纯 Markdown，人类可直接编辑。
+                </p>
+              </div>
+            </div>
+
+            {/* Daily Logs */}
+            <div className="border border-zinc-200 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded font-mono text-xs">DAILY</span>
+                <h3 className="text-lg font-semibold text-zinc-800">Daily Logs — 每日日志</h3>
+              </div>
+              <p className="text-zinc-600 mb-4 text-sm">append-only，基于用户时区命名。</p>
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`# memory/2026-03-11.md
+
+## 10:23 - 天气查询
+用户询问北京天气，回复晴转多云，15-22°C
+
+## 14:05 - 代码审查
+帮用户审查了 api/routes.ts，发现3个潜在问题：
+1. SQL 注入风险在 line 45
+2. 缺少错误处理
+3. 性能问题：N+1 查询`}</code>
+                </pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 索引与搜索 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">索引与搜索</h2>
+
+          <div className="bg-gradient-to-r from-violet-50 to-blue-50 rounded-xl p-6 mb-6">
+            <h3 className="font-semibold text-zinc-800 mb-3">混合搜索架构</h3>
+            <p className="text-zinc-600 text-sm mb-4">OpenClaw 使用<strong>向量 + 关键词混合搜索</strong>，结合两种检索策略的优势：</p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-white rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-violet-600 font-mono text-sm">Embedding</span>
+                </div>
+                <p className="text-xs text-zinc-500">文本转为向量，计算余弦相似度。擅长模糊搜索、语义关联。</p>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-blue-600 font-mono text-sm">BM25</span>
+                </div>
+                <p className="text-xs text-zinc-500">TF-IDF 加权关键词匹配。擅长精确匹配（文件名、命令、人名）。</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border border-zinc-200 rounded-xl overflow-hidden mb-6">
+            <table className="w-full text-sm">
+              <thead className="bg-zinc-50">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">搜索策略</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">原理</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">擅长场景</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100">
+                <tr>
+                  <td className="px-4 py-3 font-medium text-violet-600">Embedding 向量</td>
+                  <td className="px-4 py-3 text-zinc-600">文本转为向量，计算余弦相似度</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">模糊搜索、语义关联（"之前讨论的部署问题"）</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-medium text-blue-600">BM25 关键词</td>
+                  <td className="px-4 py-3 text-zinc-600">TF-IDF 加权关键词匹配</td>
+                  <td className="px-4 py-3 text-zinc-500 text-xs">精确匹配（文件名、命令、人名）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-5">
+            <p className="font-medium text-amber-800 mb-2">时间衰减 (Temporal Decay)</p>
+            <p className="text-sm text-amber-700">旧记忆分数按指数衰减，确保新信息优先。半衰期默认 30 天。</p>
+            <div className="mt-3 bg-amber-100 rounded-lg p-3 font-mono text-xs text-amber-800">
+              Day 0: score × 1.00 (100%) → Day 30: score × 0.50 (50%) → Day 60: score × 0.25 (25%)
+            </div>
+          </div>
+        </section>
+
+        {/* Pre-Compaction */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6 flex items-center gap-3">
+            <span>🛡️</span>
+            Pre-Compaction 机制
+          </h2>
+
+          <div className="bg-red-50 border-l-4 border-red-500 rounded-r-xl p-5 mb-6">
+            <p className="font-medium text-red-800 mb-2">为什么需要？</p>
+            <p className="text-sm text-red-700">
+              当 Session 接近 token 限制时，LLM 会压缩或截断旧消息。如果没有保护机制，重要信息会随着上下文窗口滑动而丢失。
+            </p>
+          </div>
+
+          <h3 className="text-lg font-semibold text-zinc-800 mb-4">执行流程</h3>
+
+          <div className="space-y-4 mb-6">
+            <div className="flex items-start gap-4 p-4 bg-zinc-50 rounded-xl">
+              <div className="w-8 h-8 bg-violet-100 rounded-full flex items-center justify-center text-violet-600 font-bold text-sm flex-shrink-0">1</div>
+              <div>
+                <h4 className="font-medium text-zinc-800">检测阈值</h4>
+                <p className="text-sm text-zinc-600">Session token 接近上限时触发</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 p-4 bg-zinc-50 rounded-xl">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm flex-shrink-0">2</div>
+              <div>
+                <h4 className="font-medium text-zinc-800">静默保存 (Silent Turn)</h4>
+                <p className="text-sm text-zinc-600">Agent 在后台执行隐藏 turn，写入 memory/YYYY-MM-DD.md，返回 NO_REPLY（用户不可见）</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 p-4 bg-zinc-50 rounded-xl">
+              <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold text-sm flex-shrink-0">3</div>
+              <div>
+                <h4 className="font-medium text-zinc-800">上下文压缩</h4>
+                <p className="text-sm text-zinc-600">旧消息被压缩或截断，释放 token 空间</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 p-4 bg-zinc-50 rounded-xl">
+              <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold text-sm flex-shrink-0">4</div>
+              <div>
+                <h4 className="font-medium text-zinc-800">会话继续</h4>
+                <p className="text-sm text-zinc-600">重要记忆已持久化到磁盘，可通过 memory_search 检索</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-zinc-900 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+              <span className="text-zinc-400 text-sm">保护规则</span>
+            </div>
+            <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+              <code>{`1. 只追加写入：Daily Log 只能追加，不能覆盖
+2. 只读保护：MEMORY.md、SOUL.md、AGENTS.md 在 flush 期间只读
+3. 防重复：每个压缩周期只执行一次 flush`}</code>
+            </pre>
+          </div>
+        </section>
+
+        {/* 工具 API */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">工具 API</h2>
+
+          <div className="space-y-6">
+            {/* memory_search */}
+            <div className="border border-zinc-200 rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-zinc-800 mb-2 font-mono">memory_search</h3>
+              <p className="text-zinc-600 mb-4 text-sm">语义搜索：搜索 MEMORY.md + memory/*.md</p>
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`// 参数
+{
+  query: string,       // 搜索查询
+  maxResults?: number, // 最大结果数（默认 6）
+  minScore?: number    // 最低分数阈值
+}
+
+// 返回
+{
+  results: [{
+    path: "memory/2026-03-10.md",
+    snippet: "## 14:05 - 代码审查...",
+    score: 0.85
+  }]
+}`}</code>
+                </pre>
+              </div>
+            </div>
+
+            {/* memory_get */}
+            <div className="border border-zinc-200 rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-zinc-800 mb-2 font-mono">memory_get</h3>
+              <p className="text-zinc-600 mb-4 text-sm">精确读取：读取特定记忆文件的指定行</p>
+              <div className="bg-zinc-900 rounded-xl overflow-hidden">
+                <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+                  <code>{`// 参数
+{
+  path: string,      // 文件路径
+  from?: number,     // 起始行号
+  lines?: number     // 读取行数
+}
+
+// 返回
+{
+  path: "MEMORY.md",
+  text: "# Long-term Memory\\n\\n## User Preferences\\n..."
+}`}</code>
+                </pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CLI 命令 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">CLI 命令</h2>
+
+          <div className="bg-zinc-900 rounded-xl overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border-b border-zinc-700">
+              <span className="text-zinc-400 text-sm">terminal</span>
+            </div>
+            <pre className="p-4 text-sm font-mono text-zinc-300 overflow-x-auto">
+              <code>{`# 搜索记忆
+openclaw memory search "API 重构"
+
+# 检查索引状态
+openclaw memory --index
+
+# 详细调试信息
+openclaw memory --deep --json
+
+# 强制重建索引
+openclaw memory --rebuild`}</code>
+            </pre>
+          </div>
+        </section>
+
+        {/* 配置建议 */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-semibold text-zinc-900 mb-6">配置建议</h2>
+
+          <div className="border border-zinc-200 rounded-xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-zinc-50">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">场景</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">vectorWeight</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">textWeight</th>
+                  <th className="text-left px-4 py-3 font-medium text-zinc-700 border-b border-zinc-200">MMR</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100">
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">代码搜索</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.5</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.5</td>
+                  <td className="px-4 py-3 text-zinc-500">off</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">语义回忆</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.8</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.2</td>
+                  <td className="px-4 py-3 text-zinc-500">on</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">精确查找</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.3</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.7</td>
+                  <td className="px-4 py-3 text-zinc-500">off</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 text-zinc-700">日常对话</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.7</td>
+                  <td className="px-4 py-3 font-mono text-violet-600 text-xs">0.3</td>
+                  <td className="px-4 py-3 text-zinc-500">on</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* 总结 */}
+        <section className="mb-14">
+          <div className="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-6 border border-violet-100">
+            <h3 className="font-semibold text-violet-800 mb-3">核心思想</h3>
+            <p className="text-violet-700 text-lg mb-4">
+              记忆应该持久化到磁盘，而不是留在 RAM 中
+            </p>
+            <p className="text-violet-600 text-sm">
+              这使得记忆可以：在会话间保持、长期积累知识、支持语义检索、人类可读可编辑。
+            </p>
+            <p className="text-violet-600 text-sm mt-3">
+              通过四层架构（SOUL → USER → DAILY → SESSION）和 Pre-Compaction 保护机制，OpenClaw 实现了真正的"记忆连续性"，这是区别于普通 Chatbot 的核心竞争力。
+            </p>
+          </div>
+        </section>
+
+        {/* 导航 */}
+        <footer className="pt-8 border-t border-zinc-100">
+          <div className="flex justify-between items-center">
+            <a href="/docs/components" className="text-zinc-500 hover:text-zinc-900 transition-colors">
+              ← 组件介绍
+            </a>
+            <a href="/docs/skills" className="text-zinc-500 hover:text-zinc-900 transition-colors">
+              技能安装 →
+            </a>
+          </div>
+        </footer>
+      </div>
+    </div>
+  )
+}

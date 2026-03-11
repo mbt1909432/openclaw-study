@@ -33,6 +33,7 @@ const docSections = [
     items: [
       { href: '/docs/architecture', title: '整体架构', desc: 'Gateway-Node-Channel 三层架构' },
       { href: '/docs/components', title: '组件介绍', desc: 'Gateway、Agent、Channels、Tools、Memory、Skills' },
+      { href: '/docs/memory', title: '记忆系统', desc: '四层架构、向量搜索、Pre-Compaction' },
       { href: '/docs/workspace', title: '目录结构', desc: 'Gateway 目录、工作区、多 Profile' },
     ]
   },
