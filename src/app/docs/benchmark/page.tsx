@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Metadata } from 'next'
 
 export default function BenchmarkPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'experiment' | 'alfworld' | 'scienceworld' | 'webshop' | 'skillnet' | 'code' | 'faq'>('overview')
 
   return (
     <div className="min-h-screen bg-white">
@@ -105,6 +105,16 @@ export default function BenchmarkPage() {
             }`}
           >
             SkillNet
+          </button>
+          <button
+            onClick={() => setActiveTab('faq')}
+            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'faq'
+                ? 'border-violet-500 text-violet-600'
+                : 'border-transparent text-zinc-500 hover:text-zinc-700'
+            }`}
+          >
+            常见问题
           </button>
         </div>
 
@@ -999,6 +1009,428 @@ print(f"效率提升: {improvement:.1f}%")`}</code>
                 <code className="bg-amber-100 px-2 py-0.5 rounded text-xs">C:\\claude_agent_sdk_lab\\skill-benchmark\\03_simple_agent.py</code>
               </p>
             </div>
+          </section>
+        )}
+
+        {/* FAQ Tab */}
+        {activeTab === 'faq' && (
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-zinc-900 mb-6">Benchmark 常见问题</h2>
+            <p className="text-zinc-600 mb-8">记录学习 Benchmark 过程中的疑惑和解答</p>
+
+            {/* Q1: ALFWorld 是 Benchmark 测试框架吗？ */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q1: ALFWorld 是 Benchmark 测试框架吗？</h3>
+              <div className="bg-red-50 border-l-4 border-red-500 rounded-r-xl p-5 mb-4">
+                <p className="font-semibold text-red-800">不是。</p>
+                <p className="text-red-700 mt-2">ALFWorld 是<strong>环境/测试基准</strong>，不是测试框架。</p>
+              </div>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">概念</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">是什么</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">类比</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">ALFWorld</td><td className="px-4 py-3 text-sm text-zinc-600">环境，提供任务场景</td><td className="px-4 py-3 text-sm text-zinc-500">试卷（题目本身）</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Agent</td><td className="px-4 py-3 text-sm text-zinc-600">执行任务的程序</td><td className="px-4 py-3 text-sm text-zinc-500">考生</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Benchmark 框架</td><td className="px-4 py-3 text-sm text-zinc-600">组织测试、收集数据、生成报告</td><td className="px-4 py-3 text-sm text-zinc-500">考试系统</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Memory 系统</td><td className="px-4 py-3 text-sm text-zinc-600">帮助 Agent 记忆和提高</td><td className="px-4 py-3 text-sm text-zinc-500">考生的笔记本</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-medium text-green-800 mb-2">✅ ALFWorld 提供</p>
+                  <ul className="text-sm text-green-700 space-y-1">
+                    <li>• 虚拟环境（家庭场景）</li>
+                    <li>• 预定义任务（把苹果放冰箱等）</li>
+                    <li>• 标准接口（step, reset, observation）</li>
+                  </ul>
+                </div>
+                <div className="bg-red-50 rounded-xl p-5">
+                  <p className="font-medium text-red-800 mb-2">❌ ALFWorld 不提供</p>
+                  <ul className="text-sm text-red-700 space-y-1">
+                    <li>• Agent 实现（你要自己写）</li>
+                    <li>• 评估框架（你要自己写）</li>
+                    <li>• 对比实验工具（你要自己写）</li>
+                    <li>• 结果分析（你要自己写）</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Q2: 笨Agent vs 聪明Agent */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q2: "笨 Agent" 和 "聪明 Agent" 是怎么来的？</h3>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-orange-50 rounded-xl p-5">
+                  <p className="font-semibold text-orange-800 mb-3">笨 Agent (DumbAgent)</p>
+                  <p className="text-sm text-orange-700 mb-3">完全没有策略，随机乱试</p>
+                  <div className="bg-orange-100 rounded-lg p-3">
+                    <code className="text-xs text-orange-800">
+                      def act(self, observation):<br/>
+                      &nbsp;&nbsp;return random.choice(所有可能的动作)
+                    </code>
+                  </div>
+                  <p className="text-sm text-orange-600 mt-3">就像：一个人闭着眼睛，随机按键</p>
+                </div>
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-3">聪明 Agent (SmartAgent)</p>
+                  <p className="text-sm text-blue-700 mb-3">有明确的状态机，按步骤执行</p>
+                  <div className="bg-blue-100 rounded-lg p-3">
+                    <code className="text-xs text-blue-800">
+                      if 当前阶段 == "找苹果": 去客厅<br/>
+                      elif 当前阶段 == "拿苹果": 拿起苹果
+                    </code>
+                  </div>
+                  <p className="text-sm text-blue-600 mt-3">就像：一个人拿着清单，一步一步执行</p>
+                </div>
+              </div>
+
+              <div className="bg-violet-50 border-l-4 border-violet-500 rounded-r-xl p-5">
+                <p className="font-medium text-violet-800 mb-2">Benchmark 要证明</p>
+                <p className="text-sm text-violet-700">有了 Memory，笨 Agent 可以变成聪明 Agent</p>
+                <div className="mt-3 font-mono text-xs text-violet-600">
+                  无 Memory: 笨 Agent → 永远笨 → 表现不变<br/>
+                  有 Memory: 笨 Agent → 学习经验 → 变聪明 → 表现提升
+                </div>
+              </div>
+            </div>
+
+            {/* Q3: React、Expel、SkillNet */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q3: React、Expel、SkillNet 分别是什么？</h3>
+
+              <div className="space-y-4 mb-6">
+                <div className="bg-zinc-50 rounded-xl p-5">
+                  <p className="font-semibold text-zinc-800 mb-2">React (2022) = Reasoning + Acting</p>
+                  <p className="text-sm text-zinc-600 mb-3">边想边做，但<strong>没有记忆</strong>，每次都是从零开始</p>
+                  <div className="flex items-center gap-2 text-xs text-zinc-500">
+                    <span className="bg-zinc-200 px-2 py-1 rounded">思考 Thought</span>
+                    <span>→</span>
+                    <span className="bg-zinc-200 px-2 py-1 rounded">行动 Action</span>
+                    <span>→</span>
+                    <span className="bg-zinc-200 px-2 py-1 rounded">观察 Observation</span>
+                    <span>→ 循环</span>
+                  </div>
+                </div>
+
+                <div className="bg-zinc-50 rounded-xl p-5">
+                  <p className="font-semibold text-zinc-800 mb-2">Expel (2023) = Experience Learning</p>
+                  <p className="text-sm text-zinc-600 mb-3">会从过去的经验中学习，但经验是<strong>"隐式"的</strong>，不是结构化的技能文件</p>
+                  <div className="text-xs text-zinc-500">
+                    第1次任务 → 提取经验 → 第2次任务参考经验 → 表现更好
+                  </div>
+                </div>
+
+                <div className="bg-emerald-50 rounded-xl p-5">
+                  <p className="font-semibold text-emerald-800 mb-2">SkillNet = 技能网络</p>
+                  <p className="text-sm text-emerald-700 mb-3">把经验变成<strong>结构化的"技能"</strong>（SKILL.md 文件）</p>
+                  <div className="grid grid-cols-2 gap-2 text-xs text-emerald-600">
+                    <span>✓ 可被评估（五维度）</span>
+                    <span>✓ 可被检索（相似任务）</span>
+                    <span>✓ 可被组合（和其他技能）</span>
+                    <span>✓ 可被共享（给别人用）</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">对比</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">React</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">Expel</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">SkillNet</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">记忆</td><td className="px-4 py-3 text-sm text-red-600">❌ 无</td><td className="px-4 py-3 text-sm text-yellow-600">✅ 有（隐式）</td><td className="px-4 py-3 text-sm text-green-600">✅ 有（显式技能）</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">经验形式</td><td className="px-4 py-3 text-sm text-zinc-500">无</td><td className="px-4 py-3 text-sm text-zinc-500">上下文中的文字</td><td className="px-4 py-3 text-sm text-zinc-500">结构化的 SKILL.md</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">可复用</td><td className="px-4 py-3 text-sm text-zinc-500">-</td><td className="px-4 py-3 text-sm text-zinc-500">有限</td><td className="px-4 py-3 text-sm text-green-600">✅ 高度可复用</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">可评估</td><td className="px-4 py-3 text-sm text-zinc-500">-</td><td className="px-4 py-3 text-sm text-red-600">❌</td><td className="px-4 py-3 text-sm text-green-600">✅ 五维度评估</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Q4: SkillNet 的 Agent 来源 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q4: SkillNet 的 Agent 和测试框架是自己写的吗？</h3>
+              <p className="text-zinc-600 mb-4">部分是，部分不是。</p>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">方法</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">来源</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">说明</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">React</td><td className="px-4 py-3 text-sm text-zinc-500">别人的论文 (2022)</td><td className="px-4 py-3 text-sm text-zinc-500">基础的 ReAct 推理方法</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Expel</td><td className="px-4 py-3 text-sm text-zinc-500">别人的论文 (2023)</td><td className="px-4 py-3 text-sm text-zinc-500">经验学习的方法</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">+ SkillNet</td><td className="px-4 py-3 text-sm text-emerald-600">他们写的</td><td className="px-4 py-3 text-sm text-zinc-500">把 SkillNet 技能库接入上面两个</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-5">
+                <p className="font-medium text-amber-800 mb-2">SkillNet 的真正贡献</p>
+                <p className="text-sm text-amber-700">不是写了一个全新的 Agent，而是提供了一个"技能库"，可以接入任何 Agent</p>
+                <div className="mt-3 text-sm text-amber-600 font-mono">
+                  React/Expel = 发动机 (别人的)<br/>
+                  SkillNet = 涡轮增压器 (他们的)<br/>
+                  React + SkillNet = 给发动机加装涡轮，性能提升
+                </div>
+              </div>
+            </div>
+
+            {/* Q5: 三者关系 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q5: SkillNet、Acontext、Benchmark 三者是什么关系？</h3>
+
+              <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl p-5 mb-4">
+                <p className="font-medium text-blue-800 mb-2">首先搞清楚：SkillNet 和 Acontext 是两个独立的东西</p>
+              </div>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">系统</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">定位</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">核心功能</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">SkillNet</td><td className="px-4 py-3 text-sm text-zinc-600">技能管理平台</td><td className="px-4 py-3 text-sm text-zinc-500">200k 技能库 + 评估框架 + 关系图谱</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Acontext</td><td className="px-4 py-3 text-sm text-zinc-600">技能记忆层</td><td className="px-4 py-3 text-sm text-zinc-500">让 Agent 记住和复用经验</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Benchmark</td><td className="px-4 py-3 text-sm text-zinc-600">测试验证</td><td className="px-4 py-3 text-sm text-zinc-500">证明 Memory 系统是否有效</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Q6: 用 SkillNet 评估 Acontext */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q6: 可以用 SkillNet 给 Acontext 做评估吗？</h3>
+              <div className="bg-green-50 border-l-4 border-green-500 rounded-r-xl p-5 mb-4">
+                <p className="font-semibold text-green-800">可以！有两种方式：</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div className="bg-zinc-50 rounded-xl p-5">
+                  <p className="font-semibold text-zinc-800 mb-3">方式 1: 评估技能质量</p>
+                  <p className="text-sm text-zinc-600 mb-3">用 SkillNet 五维度评估框架评估 Acontext 生成的技能</p>
+                  <ul className="text-sm text-zinc-500 space-y-1">
+                    <li>• Safety - 是否有危险操作？</li>
+                    <li>• Completeness - 是否包含所有步骤？</li>
+                    <li>• Executability - 能否实际执行？</li>
+                    <li>• Maintainability - 是否易于维护？</li>
+                    <li>• Cost-awareness - 执行成本多少？</li>
+                  </ul>
+                </div>
+                <div className="bg-zinc-50 rounded-xl p-5">
+                  <p className="font-semibold text-zinc-800 mb-3">方式 2: 跑对比实验</p>
+                  <p className="text-sm text-zinc-600 mb-3">用 SkillNet 的 Benchmark 环境测试 Acontext 的效果</p>
+                  <div className="text-sm text-zinc-500">
+                    无 Acontext (对照组) VS 有 Acontext (实验组)<br/>
+                    在相同环境 (ALFWorld/WebShop) 运行<br/>
+                    对比成功率、步数等指标
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Q7: 评估指标 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q7: 评估指标有哪些？怎么选？</h3>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">指标</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">说明</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">计算方式</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">任务成功率</td><td className="px-4 py-3 text-sm text-zinc-500">完成了多少任务</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">成功数 / 总任务数</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">平均步数</td><td className="px-4 py-3 text-sm text-zinc-500">完成任务用了多少步</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">总步数 / 成功数</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">学习曲线</td><td className="px-4 py-3 text-sm text-zinc-500">多轮后表现提升</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">后N轮 - 前N轮</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">记忆利用率</td><td className="px-4 py-3 text-sm text-zinc-500">复用了多少已存经验</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">复用次数 / 总动作数</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">泛化能力</td><td className="px-4 py-3 text-sm text-zinc-500">能否处理新任务</td><td className="px-4 py-3 text-sm text-zinc-500 font-mono text-xs">新任务成功率</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-violet-50 rounded-xl p-5">
+                <p className="font-medium text-violet-800 mb-2">怎么选？</p>
+                <ul className="text-sm text-violet-700 space-y-1">
+                  <li>• <strong>基础实验</strong>：成功率 + 平均步数</li>
+                  <li>• <strong>学习效果</strong>：学习曲线</li>
+                  <li>• <strong>深入分析</strong>：记忆利用率 + 泛化能力</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Q8: 实验设计 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q8: Benchmark 实验怎么设计？</h3>
+
+              <div className="bg-zinc-50 rounded-xl p-5 mb-6">
+                <p className="font-semibold text-zinc-800 mb-3">基本原则</p>
+                <ol className="text-sm text-zinc-600 space-y-2">
+                  <li>1. <strong>有对照组</strong>：无 Memory vs 有 Memory</li>
+                  <li>2. <strong>控制变量</strong>：相同环境、相同任务、相同 Agent 架构</li>
+                  <li>3. <strong>多次实验</strong>：取平均，减少随机性</li>
+                  <li>4. <strong>明确指标</strong>：知道要测量什么</li>
+                </ol>
+              </div>
+
+              <div className="bg-blue-50 rounded-xl p-5 mb-6">
+                <p className="font-semibold text-blue-800 mb-3">实验流程</p>
+                <div className="text-sm text-blue-700 font-mono space-y-1">
+                  <p>1. 准备环境 (ALFWorld 或模拟环境)</p>
+                  <p>2. 实现 Agent (对照组: 无Memory / 实验组: 有Memory)</p>
+                  <p>3. 运行多轮实验 (如 5 轮 × 10 个任务)</p>
+                  <p>4. 收集数据 (成功率、步数、学习曲线)</p>
+                  <p>5. 分析结果 (对比两组表现)</p>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">结果</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">说明</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">下一步</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-green-600 font-medium">实验组 &gt; 对照组</td><td className="px-4 py-3 text-sm text-zinc-500">✅ Memory 有效</td><td className="px-4 py-3 text-sm text-zinc-500">可以发表/发布</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-yellow-600 font-medium">实验组 ≈ 对照组</td><td className="px-4 py-3 text-sm text-zinc-500">❌ Memory 没用</td><td className="px-4 py-3 text-sm text-zinc-500">检查实现是否有问题</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-red-600 font-medium">实验组 &lt; 对照组</td><td className="px-4 py-3 text-sm text-zinc-500">❌ Memory 有害</td><td className="px-4 py-3 text-sm text-zinc-500">检查是否记忆了错误内容</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Q9: 论文对比实验 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q9: 论文的对比实验是怎么做的？</h3>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">方法</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">Agent 架构</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">记忆</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">技能来源</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">React</td><td className="px-4 py-3 text-sm text-zinc-500">T-A-O 循环</td><td className="px-4 py-3 text-sm text-red-600">❌ 无</td><td className="px-4 py-3 text-sm text-zinc-400">-</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Expel</td><td className="px-4 py-3 text-sm text-zinc-500">React + 经验学习</td><td className="px-4 py-3 text-sm text-yellow-600">✅ 隐式</td><td className="px-4 py-3 text-sm text-zinc-500">上下文示例</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">+ SkillNet</td><td className="px-4 py-3 text-sm text-zinc-500">同上</td><td className="px-4 py-3 text-sm text-green-600">✅ 显式</td><td className="px-4 py-3 text-sm text-zinc-500">结构化技能库</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl p-5 mb-4">
+                <p className="font-medium text-emerald-800 mb-2">核心结论</p>
+                <p className="text-sm text-emerald-700">结构化的技能库比隐式记忆更有效</p>
+                <div className="mt-3 grid grid-cols-2 gap-4 text-sm text-emerald-600">
+                  <div>React → + SkillNet: <strong>+40%</strong> 奖励</div>
+                  <div>Expel → + SkillNet: <strong>+30%</strong> 奖励</div>
+                </div>
+              </div>
+
+              <div className="bg-zinc-50 rounded-xl p-5">
+                <p className="font-medium text-zinc-800 mb-3">代码仓库</p>
+                <ul className="text-sm text-zinc-600 space-y-2">
+                  <li>• <strong>React</strong>: <a href="https://github.com/ysymyth/ReAct" className="text-blue-600 hover:underline" target="_blank" rel="noopener">github.com/ysymyth/ReAct</a></li>
+                  <li>• <strong>Expel</strong>: <a href="https://github.com/LeapLabTHU/ExpeL" className="text-blue-600 hover:underline" target="_blank" rel="noopener">github.com/LeapLabTHU/ExpeL</a></li>
+                  <li>• <strong>ALFWorld</strong>: <a href="https://github.com/alfworld/alfworld" className="text-blue-600 hover:underline" target="_blank" rel="noopener">github.com/alfworld/alfworld</a></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Q10: 下一步 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q10: 下一步该做什么？</h3>
+
+              <div className="grid md:grid-cols-3 gap-4 mb-6">
+                <div className="bg-green-50 rounded-xl p-5">
+                  <p className="font-semibold text-green-800 mb-2">A. 继续了解概念</p>
+                  <p className="text-sm text-green-600">读文档，理解理论</p>
+                  <p className="text-xs text-green-500 mt-2">难度：简单</p>
+                </div>
+                <div className="bg-blue-50 rounded-xl p-5">
+                  <p className="font-semibold text-blue-800 mb-2">B. 写模拟 Benchmark</p>
+                  <p className="text-sm text-blue-600">用模拟环境写框架，不依赖 ALFWorld</p>
+                  <p className="text-xs text-blue-500 mt-2">难度：中等</p>
+                </div>
+                <div className="bg-orange-50 rounded-xl p-5">
+                  <p className="font-semibold text-orange-800 mb-2">C. 跑真实环境</p>
+                  <p className="text-sm text-orange-600">配置 ALFWorld，跑真实实验</p>
+                  <p className="text-xs text-orange-500 mt-2">难度：较难</p>
+                </div>
+              </div>
+
+              <div className="bg-violet-50 border-l-4 border-violet-500 rounded-r-xl p-5">
+                <p className="font-medium text-violet-800 mb-2">建议：先做 B</p>
+                <p className="text-sm text-violet-700">用模拟环境把 Benchmark 框架写出来</p>
+                <ul className="text-sm text-violet-600 mt-3 space-y-1">
+                  <li>• 实现通用的 Benchmark 框架</li>
+                  <li>• 支持: 无 Memory vs 有 Memory 对比</li>
+                  <li>• 产出: 评估报告 (成功率、步数、学习曲线)</li>
+                  <li>• 之后可以接入 ALFWorld 或其他环境</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Q11: 术语表 */}
+            <div className="mb-10">
+              <h3 className="text-xl font-semibold text-zinc-800 mb-4">Q11: 术语表</h3>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-zinc-200 rounded-lg overflow-hidden">
+                  <thead className="bg-zinc-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">术语</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-zinc-700 border-b">含义</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Benchmark</td><td className="px-4 py-3 text-sm text-zinc-500">基准测试，标准化的评估方法</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Environment</td><td className="px-4 py-3 text-sm text-zinc-500">环境，Agent 执行任务的虚拟世界</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Agent</td><td className="px-4 py-3 text-sm text-zinc-500">智能体，执行任务的程序</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Episode</td><td className="px-4 py-3 text-sm text-zinc-500">一次完整的任务执行</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Trajectory</td><td className="px-4 py-3 text-sm text-zinc-500">执行轨迹，动作序列</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Skill</td><td className="px-4 py-3 text-sm text-zinc-500">技能，可复用的能力单元</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Memory</td><td className="px-4 py-3 text-sm text-zinc-500">记忆系统，存储和检索经验</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Skill Memory</td><td className="px-4 py-3 text-sm text-zinc-500">技能型记忆，把经验存成技能</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Baseline</td><td className="px-4 py-3 text-sm text-zinc-500">基线，对照组</td></tr>
+                    <tr><td className="px-4 py-3 text-sm text-zinc-600 font-medium">Ablation</td><td className="px-4 py-3 text-sm text-zinc-500">消融实验，去掉某功能看效果</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
           </section>
         )}
 
